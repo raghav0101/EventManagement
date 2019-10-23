@@ -1,0 +1,5 @@
+date	size'/'remotesize	flags(request:Update,Range state:File response:Modified,Chunked,gZipped)	statuscode	status ('servermsg')	MIME	Etag|Date	URL	localfile	(from URL)
+20:46:40	169/169	------	404	error ('Not%20Found')	text/html	date:Wed,%2023%20Oct%202019%2015:02:47%20GMT	http://demo.ovathemes.com/robots.txt		(from )
+20:46:40	121776/121776	------	200	untouched ('OK')	text/html	date:Wed,%2023%20Oct%202019%2015:03:28%20GMT	http://demo.ovathemes.com/eventmana/home-page/	/home/halwa/websites/events/demo.ovathemes.com/eventmana/home-page/index.html	(from )
+20:46:41	0/0	---MC-	301	error ('Moved%20Permanently')	text/html	date:Wed,%2023%20Oct%202019%2015:07:31%20GMT	http://demo.ovathemes.com/eventmana/home-page/1	/home/halwa/websites/events/demo.ovathemes.com/eventmana/home-page/1.0.delayed	(from http://demo.ovathemes.com/eventmana/home-page/)
+20:46:41	0/-1	---M--	301	error ('')			http://demo.ovathemes.com/eventmana/home-page/1	/home/halwa/websites/events/demo.ovathemes.com/eventmana/home-page/1.1.delayed	(from http://demo.ovathemes.com/eventmana/home-page/)
