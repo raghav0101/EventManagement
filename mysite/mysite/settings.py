@@ -25,6 +25,16 @@ SECRET_KEY = '@=k#y%vk1-=b$)1%-^&2vz#8jnzo=ts$4&oayijx$dc-0_e1jw'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Cors and allowed hosts setup
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
 ALLOWED_HOSTS = []
 
 
@@ -37,10 +47,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # User defined
     'event',
+    # 3rd party
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -80,7 +94,7 @@ DATABASES = {
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  
         'NAME': 'event',
         'USER' : 'root',
-        'PASSWORD': 'helloworld',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT' : '3306',
     }
