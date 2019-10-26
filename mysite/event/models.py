@@ -5,21 +5,24 @@ class Event(models.Model):
     event_id = models.CharField(max_length=10, null=False,primary_key=True)
     event_name= models.CharField(max_length=50,null=False)
     event_type=models.CharField(max_length=20,null=False)
-    date= models.DateField(null=False)
+    event_date= models.DateField(null=False)
     time=models.TimeField(null=False)
+
+    def __str__(self):
+        return self.event_name
 
 class Organisation(models.Model):
     org_id=models.CharField(max_length=10, null=False,primary_key=True)
     org_name= models.CharField(max_length=50, null=False)
     org_location= models.CharField(max_length=20, null=False)
-    email=models.CharField(null=True)
+    email=models.CharField(max_length=20, null=True)
     phn_no=models.CharField(max_length=10,null=False)
 
 class Org(models.Model):
-    org_id = models.ForeignKey(Organisation, null=False,primary_key=True)
-    event_id = models.ForeignKey(Event, null=False)
+    org_id = models.ForeignKey(Organisation, null=False,on_delete=models.CASCADE)
+    event_id = models.ForeignKey(Event, null=False, on_delete=models.CASCADE)
 
-class Users(models.Models):
+class Users(models.Model):
     user_id=models.CharField(max_length=10, null=False, primary_key=True)
     name=models.CharField(max_length=50,null=False)
     email=models.CharField(max_length=20,null=False)
@@ -28,18 +31,8 @@ class Users(models.Models):
     dob=models.DateField(null=False)
 
 class  User(models.Model):
-    user_id=models.ForeignKey(Users,null=False,primary_key=True)
-    event_id=models.ForeignKey(Event,null=False)
-
-class Managing_Team(models.Model):
-    team_id=models.CharField(max_length=10,null=False,primary_key=True)
-    name=models.CharField(max_length=50,null=False)
-    email=models.CharField(max_length=50,null=False)
-    phn_no=models.CharField(max_length=10,null=False)
-
-class Managing(models.Model):
-    team_id=models.ForeignKey(Managing_Team,null=False,primary_key=True)
-    event_id=models.ForeignKey(Event,null=False)
+    user_id=models.ForeignKey(Users,null=False, on_delete=models.CASCADE)
+    event_id=models.ForeignKey(Event,null=False, on_delete=models.CASCADE)
 
 class Payment(models.Model):
     payment_id=models.CharField(max_length=10,null=False,primary_key=True)
@@ -48,13 +41,13 @@ class Payment(models.Model):
     time=models.TimeField(null=False)
 
 class Pay(models.Model):
-    payment_id=models.ForeignKey(Payment,null=False,primary_key=True)
-    user_id=models.ForeignKey(Users,null=False)
+    payment_id=models.ForeignKey(Payment,null=False, on_delete=models.CASCADE)
+    user_id=models.ForeignKey(Users,null=False, on_delete=models.CASCADE)
 
 class Venue(models.Model):
     venue_id=models.CharField(max_length=10,null=False,primary_key=True)
-    building_name=models.CharField(max_length=50,null=True)
-    room_no=models.CharField(max_length=10,null=True)
-    availability=models.CharField(max_length=20,null=False)
+    building_name=models.CharField(max_length=50,null=True, default="IRIS labs")
+    room_no=models.CharField(max_length=10,null=True, default="10")
+    
 
 

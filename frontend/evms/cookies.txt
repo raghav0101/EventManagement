@@ -1,0 +1,7 @@
+# HTTrack Website Copier Cookie File
+# This file format is compatible with Netscape cookies
+demo.ovathemes.com	TRUE	/eventmana/	FALSE	1999999999	woocommerce_items_in_cart	1
+demo.ovathemes.com	TRUE	/eventmana/	FALSE	1999999999	wp_woocommerce_session_502d4c135700c923a90253d60eefb3d6	22e13182a8ece4e807980f0eb4c31287%7C%7C1572242352%7C%7C1572238752%7C%7C80c1351137b547a65174cefb1b651507
+demo.ovathemes.com	TRUE	/eventmana/	FALSE	1999999999	wordpress_test_cookie	WP+Cookie+check
+demo.ovathemes.com	TRUE	/eventmana/	FALSE	1999999999	woocommerce_cart_hash	b3502adb99e8b4305382130a981d1e7a
+
