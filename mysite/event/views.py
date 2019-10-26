@@ -74,7 +74,7 @@ class OtherEvents(APIView):
 
 class GetCategories(APIView):
     def get(self,request):
-        categories=['Technical','Gaming','Cultural','Other']
+        categories=['All','Technical','Gaming','Cultural','Other']
         serialized_json=json.dumps(categories)
         return Response(serialized_json,status=status.HTTP_200_OK)
 
