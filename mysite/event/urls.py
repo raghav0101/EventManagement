@@ -13,4 +13,8 @@ urlpatterns = [
     path('culturalEvents/',CulturalEvents.as_view()),
     path('otherEvents/',OtherEvents.as_view()),
     path('getCategories/',GetCategories.as_view()),
+    path('getEvent/',GetEvent.as_view()),
+    path('register/',Register.as_view()),
+    path('organisation/',Organisation.as_view()),
+    path('venue/',Venue.as_view()),
 ]
