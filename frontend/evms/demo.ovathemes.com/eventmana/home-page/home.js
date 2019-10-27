@@ -340,7 +340,7 @@ let displayOtherEvent = async ($) => {
             '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i>' + element.event_date + " at " + element.time + '  on Manhattan / New York</p>\n' +
             //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
             //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
-            '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
+                '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
             '\t\t\t\t                                </div>\n' +
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                        </div>\n' +

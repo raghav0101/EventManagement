@@ -7,7 +7,7 @@ class Event(models.Model):
     event_type=models.CharField(max_length=20,null=False)
     event_date= models.DateField(null=False)
     time=models.TimeField(null=False)
-    desc=models.CharField(max_length=100, null=False,default='No Description')
+    desc=models.CharField(max_length=500, null=False,default='No Description')
 
     def __str__(self):
         return self.event_name

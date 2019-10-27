@@ -5,13 +5,13 @@ from rest_framework import status
 from datetime import date
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
-from .serializers import EventSerializer
+from .serializers import *
 from datetime import timedelta
 import json
 
 # Create your views here.
 from django.http import HttpResponse
-from .models import Event,Organisation,Org,User,Users,Pay,Payment,Venue
+from .models import Event,Organisation,Org,User,Users,Pay,Payment,Venue,Where
 
 def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
@@ -80,7 +80,7 @@ class GetCategories(APIView):
 
 class GetEvent(APIView):
     def get(self,request):
-        event=Event.objects.get(pk=request.query_params['event_id'])
+        event=Event.objects.filter(pk=request.query_params.get('eventId'))
         serialized_event=EventSerializer(event,many=True)
         return Response(serialized_event.data,status=status.HTTP_200_OK)
 
@@ -88,7 +88,7 @@ class GetEvent(APIView):
 class Register(APIView):
     def post(self,request):
         user_id = request.data['user_id']
-        event_id = request.data['event_id']
+        event_id = request.data['eventId']
         if user_id is None or event_id is None:
              return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -98,26 +98,26 @@ class Register(APIView):
         serialized_register = (register)
         return Response(serialized_register.data, status=status.HTTP_200_OK)
 
-class Organisation(APIView):
+class Organis(APIView):
     def get(self,request):
-        event_id = request.query_params['event_id']
+        event_id = request.query_params['eventId']
         if event_id is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         event=Event.objects.get(pk=event_id)
         org_id=Org.objects.filter(event_id=event)[0].org_id
         org=Organisation.objects.get(pk=org_id.org_id)
-        serialized_org=OrganisationSerializer(org,many=True)
+        serialized_org=OrganisationSerializer(org)
         return Response(serialized_org.data,status=status.HTTP_200_OK)
 
-class Venue(APIView):
+class Ven(APIView):
     def get(self,request):
-        event_id = request.query_params['event_id']
+        event_id = request.query_params['eventId']
         if event_id is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         event=Event.objects.get(pk=event_id)
         venue_id=Where.objects.filter(event_id=event)[0].venue_id
         venue=Venue.objects.get(pk=venue_id.venue_id)
-        serialized_venue=VenueSerializer(venue,many=True)
+        serialized_venue=VenueSerializer(venue)
         return Response(serialized_venue.data,status=status.HTTP_200_OK)
 
 

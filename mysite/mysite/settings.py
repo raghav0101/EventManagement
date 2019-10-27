@@ -94,7 +94,7 @@ DATABASES = {
         #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),  
         'NAME': 'event',
         'USER' : 'root',
-        'PASSWORD': 'helloworld',
+        'PASSWORD': '1234',
         'HOST': 'localhost',
         'PORT' : '3306',
     }
