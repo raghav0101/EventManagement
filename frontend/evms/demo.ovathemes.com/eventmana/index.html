@@ -563,7 +563,7 @@ var wc_add_to_cart_params = {"ajax_url":"\/eventmana\/wp-admin\/admin-ajax.php",
         
 
     <div class="container_boxed">
-        <div class="wrapper">
+        < class="wrapper">
             <!-- HEADER -->
             <header class="header fixed">
                 
@@ -646,7 +646,7 @@ var wc_add_to_cart_params = {"ajax_url":"\/eventmana\/wp-admin\/admin-ajax.php",
 
             <section class="vc_row wpb_row vc_row-fluid vc_custom_1490671375235" ><div class="wpb_column vc_column_container vc_col-sm-12"><div class="vc_column-inner vc_custom_1490669901367"><div class="wpb_wrapper"><div id="main" class="slideshow_multi_bg ">
 	                <section class="page-section no-padding background-img-slider">
-	                    <div class="container"> 
+	                    <div class="container" id="mostRecentEvent2">
 
 	                        <div id="main-slider" class="main-slider main-slider-multi-bg owl-carousel owl-theme" data-height_desk="768px" data-height_ipad="768px" data-height_mobile="768px" data-auto_slider="true" data-duration="3000" data-navigation="true" data-loop="true">
 									          			<div class="item page text-center slide4" style="background: url(wp-content/uploads/2015/09/blog-post-3.jpg)">
@@ -680,13 +680,13 @@ var wc_add_to_cart_params = {"ajax_url":"\/eventmana\/wp-admin\/admin-ajax.php",
 
 	                    </div>
 	                </section>
-	            </div></div></div></div></section><section class="vc_row wpb_row vc_row-fluid light featured-line xs-padding vc_custom_1443423569743 vc_row-has-fill"><div class="container"><div class="row"><div class="wpb_column vc_column_container vc_col-sm-12 vc_col-lg-6 vc_col-md-6"><div class="vc_column-inner vc_custom_1443423706320"><div class="wpb_wrapper">
+	            </div></div></div></div></section><section class="vc_row wpb_row vc_row-fluid light featured-line xs-padding vc_custom_1443423569743 vc_row-has-fill"><div class="container" ><div class="row" id="mostRecentEvent"	><div class="wpb_column vc_column_container vc_col-sm-12 vc_col-lg-6 vc_col-md-6"><div class="vc_column-inner vc_custom_1443423706320"><div class="wpb_wrapper">
     	<h1 class="section-title two-lines feature"><span data-animation="flipInY" data-animation-delay="300" class="icon-inner">
     						<span class="fa-stack">
 						        <i class="fa rhex fa-stack-2x" style="background-color:#0d1d31"></i>
 						        <i class="fa fa-calendar fa-stack-1x" style="color:#ffffff"></i>
 				        	</span>
-				          </span><span data-animation="fadeInRight" data-animation-delay="500" class="title-inner"><span class="title"> FEATURED EVENT </span><small>Dont Miss The Event. PHP Conference In ISTANBUL</small>
+				          </span><span data-animation="fadeInRight" data-animation-delay="500" class="title-inner"><span class="title"> FEATURED EVENT </span><small id="featuredEventDown"></small>
 	        		</span>
 	    </h1>
     </div></div></div><div class="wpb_column vc_column_container vc_col-sm-6 vc_col-lg-4 vc_col-md-4"><div class="vc_column-inner vc_custom_1443423721706"><div class="wpb_wrapper">
@@ -700,7 +700,7 @@ var wc_add_to_cart_params = {"ajax_url":"\/eventmana\/wp-admin\/admin-ajax.php",
 		</div></div></div><div class="wpb_column vc_column_container vc_col-sm-6 vc_col-lg-2 vc_col-md-2"><div class="vc_column-inner vc_custom_1443423731114"><div class="wpb_wrapper">
 	<div class="wpb_raw_code wpb_content_element wpb_raw_html" >
 		<div class="wpb_wrapper">
-			<a href="event/2016-calgary-comic-entertainment-expo/index.html" class="btn btn-theme btn-details">Ticket & Detail <i class="fa fa-arrow-circle-right"></i></a>
+			<!--<a href="event/2016-calgary-comic-entertainment-expo/index.html" class="btn btn-theme btn-details">Ticket & Detail <i class="fa fa-arrow-circle-right"></i></a>-->
 		</div>
 	</div>
 </div></div></div></div></div></section><section class="vc_row wpb_row vc_row-fluid vc_custom_1442398408527"><div class="container"><div class="row"><div class="wpb_column vc_column_container vc_col-sm-12"><div class="vc_column-inner"><div class="wpb_wrapper"><div class="clear clearfix overflowed">
@@ -867,12 +867,13 @@ var wc_add_to_cart_params = {"ajax_url":"\/eventmana\/wp-admin\/admin-ajax.php",
 <!--				                    </div>-->
 <!--				                </div>-->
 			</div>
-    	<div class="text-center margin-top ">
-            <a data-animation="fadeInUp" data-animation-delay="100" href="event-list/index.html" target="" class="btn btn-theme btn-theme-grey-dark btn-theme-md"><i class="fa fa-file-text-o"></i> See all events</a>
-        </div>
+
     </div></div></div></div></div></section>
 
-    
+		<div class="text-center margin-top ">
+			<a data-animation="fadeInUp" data-animation-delay="100" href="event-list/index.html" target="" class="btn btn-theme btn-theme-grey-dark btn-theme-md"><i class="fa fa-file-text-o"></i> See all events</a>
+		</div>
+	</div>
 	<script type="text/javascript">
 		var c = document.body.className;
 		c = c.replace(/woocommerce-no-js/, 'woocommerce-js');
