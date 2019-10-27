@@ -78,3 +78,47 @@ class GetCategories(APIView):
         serialized_json=json.dumps(categories)
         return Response(serialized_json,status=status.HTTP_200_OK)
 
+class GetEvent(APIView):
+    def get(self,request):
+        event=Event.objects.get(pk=request.query_params['event_id'])
+        serialized_event=EventSerializer(event,many=True)
+        return Response(serialized_event.data,status=status.HTTP_200_OK)
+
+
+class Register(APIView):
+    def post(self,request):
+        user_id = request.data['user_id']
+        event_id = request.data['event_id']
+        if user_id is None or event_id is None:
+             return Response(status=status.HTTP_404_NOT_FOUND)
+
+        event = Event.objects.filter(pk=event_id)
+        user = Users.objects.filter(pk=user_id)
+        register = User.objects.create(user_id=user[0],event_id=event[0])
+        serialized_register = (register)
+        return Response(serialized_register.data, status=status.HTTP_200_OK)
+
+class Organisation(APIView):
+    def get(self,request):
+        event_id = request.query_params['event_id']
+        if event_id is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        event=Event.objects.get(pk=event_id)
+        org_id=Org.objects.filter(event_id=event)[0].org_id
+        org=Organisation.objects.get(pk=org_id.org_id)
+        serialized_org=OrganisationSerializer(org,many=True)
+        return Response(serialized_org.data,status=status.HTTP_200_OK)
+
+class Venue(APIView):
+    def get(self,request):
+        event_id = request.query_params['event_id']
+        if event_id is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        event=Event.objects.get(pk=event_id)
+        venue_id=Where.objects.filter(event_id=event)[0].venue_id
+        venue=Venue.objects.get(pk=venue_id.venue_id)
+        serialized_venue=VenueSerializer(venue,many=True)
+        return Response(serialized_venue.data,status=status.HTTP_200_OK)
+
+
+
