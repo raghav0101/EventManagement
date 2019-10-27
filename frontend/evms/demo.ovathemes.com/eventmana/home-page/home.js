@@ -1,5 +1,41 @@
 let baseurl = "http://localhost:8000";
 
+let getLatestEvent = async () => {
+    let options ={
+        headers: {'Content-Type': 'application/json'},
+        method: 'GET'
+    };
+    try{
+        let response = await fetch(baseurl + '/event/getMostRecentEvents/',options);                    // give api url
+        let jsonResponse = await response.json();
+        console.log(jsonResponse);
+
+        return jsonResponse;
+    }
+    catch (e) {
+        console.log(e);
+        return null;
+    }
+};
+
+let getLatestEventCountdown = async () => {
+    let options ={
+        headers: {'Content-Type': 'application/json'},
+        method: 'GET'
+    };
+    try{
+        let response = await fetch(baseurl + '/event/getMostRecentEvents/',options);                    // give api url
+        let jsonResponse = await response.json();
+        console.log(jsonResponse);
+
+        return jsonResponse;
+    }
+    catch (e) {
+        console.log(e);
+        return null;
+    }
+};
+
 let getEventCategories = async () => {
     let options ={
         headers: {'Content-Type': 'application/json'},
@@ -106,6 +142,38 @@ let getOtherEvents = async() => {
         return null;
     }
 
+};
+let displaySlide = async ($) =>{
+  let slide = [1];
+  console.log(slide);
+  slide.map((element,index) => {
+
+
+     $('#mostRecentEvent2').append(sl);
+  });
+};
+let displayMostRecentEventCountdown = async ($) => {
+    let eventCountdown = [1];
+    console.log(eventCountdown);
+    eventCountdown.map((element,index) => {
+        let recevent = '<div class="wpb_column vc_column_container vc_col-sm-6 vc_col-lg-4 vc_col-md-4"><div class="vc_column-inner vc_custom_1443423721706"><div class="wpb_wrapper">\n' +
+            '\t\t<div class="countdown-wrapper countdown-featured">\n' +
+            '\t\t<div id="defaultCountdown2" class="defaultCountdown clearfix " \n' +
+            '\t\t             data-years=years data-months=months data-weeks="weeks" data-days="days" data-hours="hours" data-minutes="minutes" data-seconds="seconds" \n' +
+            '\t\t             data-year=year data-month=month data-week="week" data-day="day" data-hour="hour" data-minute="minute" data-second="second" \n' +
+            '\t\t             data-end_date_y = "2020" data-end_date_m="7" data-end_date_d="17" data-end_date_h="" data-end_date_i="" \n' +
+            '\t\t             data-timezone = "0" data-display_format="dHMS"\n' +
+            '\t\t  ></div></div>\n' +
+            '\t\t</div></div></div>';
+        $('#mostRecentEvent').append(recevent);
+    });
+};
+let displayMostRecentEvent = async ($) => {
+    let event = [1];
+    console.log(event);
+    event.map((element,index) => {
+
+    });
 };
 let generateCategoryMenu = async ($) => {
     let categories = JSON.parse(await getEventCategories());
@@ -277,6 +345,9 @@ let displayOtherEvent = async ($) => {
 
 jQuery(document).ready(function ($) {
     // Your code here
+   // displaySlide($);
     generateCategoryMenu($);
     displayAllEvents($);
+    displayMostRecentEvent($);
+   // displayMostRecentEventCountdown($);
 });
