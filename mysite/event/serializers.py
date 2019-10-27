@@ -1,4 +1,4 @@
-from .models import Event,Organisation,Org,Venue,User,Users,Payment,Pay
+from .models import Event,Organisation,Org,Venue,User,Users,Payment,Pay,Where
 from rest_framework import serializers
 
 class EventSerializer(serializers.ModelSerializer):
