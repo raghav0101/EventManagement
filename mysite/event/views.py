@@ -33,7 +33,7 @@ class GetPastEvents(APIView):
 class GetMostRecentEvent(APIView):
 
     def get(self,request):
-        most_recent_event=Event.objects.filter(event_date__gte=date.today()).order_by('event_date')
+        most_recent_event=Event.objects.filter(event_date__gte=date.today()).order_by('event_date')[:1]
         serialized_most_recent_event=EventSerializer(most_recent_event,many=True)
         return Response(serialized_most_recent_event.data, status=status.HTTP_200_OK)
 
