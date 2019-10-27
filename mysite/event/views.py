@@ -87,7 +87,7 @@ class GetEvent(APIView):
 
 class Register(APIView):
     def post(self,request):
-        user_id = request.data['user_id']
+        user_id = request.data['userId']
         event_id = request.data['eventId']
         if user_id is None or event_id is None:
              return Response(status=status.HTTP_404_NOT_FOUND)
@@ -120,5 +120,16 @@ class Ven(APIView):
         serialized_venue=VenueSerializer(venue)
         return Response(serialized_venue.data,status=status.HTTP_200_OK)
 
+class RegisteredEvents(APIView):
+    def get(self,request):
+        user_id = request.query_params['userId']
+        if event_id is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        registered=User.objects.filter(user_id='userId')
+        events = []
+        for register in registered:
+            event = Event.objects.get(pk=register.event_id.event_id)
+            events += event
 
-
+        serialized_event=EventSerializer(events)
+        return Response(serialized_event.data,status=status.HTTP_200_OK)
