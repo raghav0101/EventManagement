@@ -169,10 +169,14 @@ let displayMostRecentEventCountdown = async ($) => {
     });
 };
 let displayMostRecentEvent = async ($) => {
-    let event = [1];
+    let event = await getLatestEvent();
     console.log(event);
     event.map((element,index) => {
-
+        var date = element.event_date.split('-');
+        $('#featuredEventDown').text(element.event_name);
+        $('#defaultCountdown2').attr("data-years",date[0]);
+        $('#defaultCountdown2').attr("data-months",date[1]);
+        $('#defaultCountdown2').attr("data-days",date[2]);
     });
 };
 let generateCategoryMenu = async ($) => {
@@ -186,6 +190,9 @@ let generateCategoryMenu = async ($) => {
     /*document.getElementById("Gaming").addEventListener("click", function() {
         displayGamingEvent($);
     });*/
+    document.getElementById("All").addEventListener("click", function() {
+        displayAllEvents($);
+    });
     document.getElementById("Technical").addEventListener("click", function() {
         displayTechnicalEvent($);
     });
@@ -200,7 +207,7 @@ let generateCategoryMenu = async ($) => {
     });
 };
 let displayAllEvents = async ($) => {
-    let allEvents = [1,2,3,4,5];
+    let allEvents = await getAllEvents();
     console.log(allEvents);
     $('#eventContainer').empty();
     allEvents.map((element,index) => {
@@ -214,11 +221,11 @@ let displayAllEvents = async ($) => {
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                            <div class="col-md-8">\n' +
             '\t\t\t\t                                <div class="caption">\n' +
-            '\t\t\t\t                                    <h3 class="caption-title"><a href="event/boots-and-hearts-2016/index.html">Boots and Hearts 2016</a></h3>\n' +
-            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> 08/23/2016 at 20:00 - 22:00 on Manhattan / New York</p>\n' +
-            '\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
-            '\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
-            '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html" class="btn btn-theme">Tickets & Details</a></p>\n' +
+            '\t\t\t\t                                    <h3 class="caption-title">'+ element.event_name+'</h3>\n' +
+            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> ' + element.event_date + " at " + element.time + '  on Manhattan / New York</p>\n' +
+            //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
+            //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
+            '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
             '\t\t\t\t                                </div>\n' +
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                        </div>\n' +
@@ -228,7 +235,7 @@ let displayAllEvents = async ($) => {
     });
 };
 let displayTechnicalEvent =async ($) => {
-    let technicalEvents = [1,2,3,4];
+    let technicalEvents = await getTechnicalEvents();
     console.log(technicalEvents);
     $('#eventContainer').empty();
     technicalEvents.map((element,index) => {
@@ -242,11 +249,11 @@ let displayTechnicalEvent =async ($) => {
            '\t\t\t\t                            </div>\n' +
            '\t\t\t\t                            <div class="col-md-8">\n' +
            '\t\t\t\t                                <div class="caption">\n' +
-           '\t\t\t\t                                    <h3 class="caption-title"><a href="event/boots-and-hearts-2016/index.html">Boots and Hearts 2016</a></h3>\n' +
-           '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> 08/23/2016 at 20:00 - 22:00 on Manhattan / New York</p>\n' +
-           '\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
-           '\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
-           '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html" class="btn btn-theme">Tickets & Details</a></p>\n' +
+           '\t\t\t\t                                    <h3 class="caption-title">'+ element.event_name+'</h3>\n' +
+           '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i>' + element.event_date + " at " + element.time + '  on Manhattan / New York</p>\n' +
+           //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
+           //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
+           '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
            '\t\t\t\t                                </div>\n' +
            '\t\t\t\t                            </div>\n' +
            '\t\t\t\t                        </div>\n' +
@@ -257,7 +264,7 @@ let displayTechnicalEvent =async ($) => {
 };
 
 let displayGamingEvent = async ($) => {
-    let gamingEvents = [1,2,3];
+    let gamingEvents = await getGamingEvents();
     console.log(gamingEvents);
     $('#eventContainer').empty();
     gamingEvents.map((element,index) => {
@@ -271,11 +278,11 @@ let displayGamingEvent = async ($) => {
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                            <div class="col-md-8">\n' +
             '\t\t\t\t                                <div class="caption">\n' +
-            '\t\t\t\t                                    <h3 class="caption-title"><a href="event/boots-and-hearts-2016/index.html">Boots and Hearts 2016</a></h3>\n' +
-            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> 08/23/2016 at 20:00 - 22:00 on Manhattan / New York</p>\n' +
-            '\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
-            '\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
-            '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html" class="btn btn-theme">Tickets & Details</a></p>\n' +
+            '\t\t\t\t                                    <h3 class="caption-title"><a href="event/boots-and-hearts-2016/index.html">'+ element.event_name+'</a></h3>\n' +
+            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i>' + element.event_date + " at " + element.time + '  on Manhattan / New York</p>\n' +
+            //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
+            //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
+            '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
             '\t\t\t\t                                </div>\n' +
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                        </div>\n' +
@@ -286,7 +293,7 @@ let displayGamingEvent = async ($) => {
 };
 
 let displayCulturalEvent = async ($) => {
-    let culturalEvents = [1,2];
+    let culturalEvents = await getCulturalEvents();
     console.log(culturalEvents);
     $('#eventContainer').empty();
     culturalEvents.map((element,index) => {
@@ -300,11 +307,11 @@ let displayCulturalEvent = async ($) => {
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                            <div class="col-md-8">\n' +
             '\t\t\t\t                                <div class="caption">\n' +
-            '\t\t\t\t                                    <h3 class="caption-title"><a href="event/boots-and-hearts-2016/index.html">Boots and Hearts 2016</a></h3>\n' +
-            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> 08/23/2016 at 20:00 - 22:00 on Manhattan / New York</p>\n' +
-            '\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
-            '\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
-            '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html" class="btn btn-theme">Tickets & Details</a></p>\n' +
+            '\t\t\t\t                                    <h3 class="caption-title"><a href="event/boots-and-hearts-2016/index.html">'+ element.event_name+'</a></h3>\n' +
+            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> ' + element.event_date + " at " + element.time + '  on Manhattan / New York</p>\n' +
+            //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
+            //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
+            '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
             '\t\t\t\t                                </div>\n' +
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                        </div>\n' +
@@ -315,7 +322,7 @@ let displayCulturalEvent = async ($) => {
 };
 
 let displayOtherEvent = async ($) => {
-    let otherEvents = [1];
+    let otherEvents = await getOtherEvents();
     console.log(otherEvents);
     $('#eventContainer').empty();
     otherEvents.map((element,index) => {
@@ -329,11 +336,11 @@ let displayOtherEvent = async ($) => {
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                            <div class="col-md-8">\n' +
             '\t\t\t\t                                <div class="caption">\n' +
-            '\t\t\t\t                                    <h3 class="caption-title"><a href="event/boots-and-hearts-2016/index.html">Boots and Hearts 2016</a></h3>\n' +
-            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> 08/23/2016 at 20:00 - 22:00 on Manhattan / New York</p>\n' +
-            '\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
-            '\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
-            '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html" class="btn btn-theme">Tickets & Details</a></p>\n' +
+            '\t\t\t\t                                    <h3 class="caption-title"><a href="event/boots-and-hearts-2016/index.html">'+ element.event_name+'</a></h3>\n' +
+            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i>' + element.event_date + " at " + element.time + '  on Manhattan / New York</p>\n' +
+            //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
+            //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
+            '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
             '\t\t\t\t                                </div>\n' +
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                        </div>\n' +
