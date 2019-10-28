@@ -402,7 +402,15 @@ let displayOtherEvent = async ($) => {
         $('#eventContainer').append(eventElem);
     });
 };
-
+let displayLogoutButton = async ($) => {
+    let otherEvents = [1];
+    //console.log(otherEvents);
+    $('#rm1').empty();
+    otherEvents.map((element,index) => {
+        let eventElem = '<li><a href="wp-loginc94b.html?action=login"><i class="fa fa-user"></i> Logout</a></li>';
+        $('#rm1').append(eventElem);
+    });
+};
 jQuery(document).ready(function ($) {
     // Your code here
     displaySlide($);
@@ -414,7 +422,9 @@ jQuery(document).ready(function ($) {
 
     }
     else{
-        $('#rm1').empty();
+     /*   $('#rm1').empty();
+        $('#rm1').append()*/
+     displayLogoutButton($);
     }
    // displayMostRecentEventCountdown($);
 });

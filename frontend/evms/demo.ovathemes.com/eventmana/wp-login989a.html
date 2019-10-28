@@ -99,6 +99,7 @@
 	var wc_product_block_data = JSON.parse( decodeURIComponent( '%7B%22min_columns%22%3A1%2C%22max_columns%22%3A6%2C%22default_columns%22%3A3%2C%22min_rows%22%3A1%2C%22max_rows%22%3A6%2C%22default_rows%22%3A1%2C%22thumbnail_size%22%3A300%2C%22placeholderImgSrc%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2Fwp-content%5C%2Fuploads%5C%2Fwoocommerce-placeholder.png%22%2C%22min_height%22%3A500%2C%22default_height%22%3A500%2C%22isLargeCatalog%22%3Afalse%2C%22limitTags%22%3Afalse%2C%22hasTags%22%3Afalse%2C%22productCategories%22%3A%5B%7B%22term_id%22%3A60%2C%22name%22%3A%22Uncategorized%22%2C%22slug%22%3A%22uncategorized%22%2C%22term_group%22%3A0%2C%22term_taxonomy_id%22%3A60%2C%22taxonomy%22%3A%22product_cat%22%2C%22description%22%3A%22%22%2C%22parent%22%3A0%2C%22count%22%3A0%2C%22filter%22%3A%22raw%22%2C%22link%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2Fproduct-category%5C%2Funcategorized%5C%2F%22%7D%2C%7B%22term_id%22%3A28%2C%22name%22%3A%22event%22%2C%22slug%22%3A%22event%22%2C%22term_group%22%3A0%2C%22term_taxonomy_id%22%3A28%2C%22taxonomy%22%3A%22product_cat%22%2C%22description%22%3A%22%22%2C%22parent%22%3A0%2C%22count%22%3A9%2C%22filter%22%3A%22raw%22%2C%22link%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2Fproduct-category%5C%2Fevent%5C%2F%22%7D%5D%2C%22homeUrl%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2F%22%7D' ) );
 </script>
 <script>
+	let baseurl = "http://localhost:8000";
 	const createEvent = async (data) => {
 		let options = {
 			headers: {'Content-Type': 'application/json'},
@@ -164,7 +165,7 @@
 				titleColor:'red',
 				backgroundColor: 'yellow',
 				onClosing: function(){
-					window.location.reload();
+					//window.location.reload();
 				}
 			});
 		}

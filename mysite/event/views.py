@@ -155,11 +155,11 @@ class NewEvent(APIView):
         event_date=request.data['eventDate']
         time=request.data['time']
         desc=request.data['desc']
-        event_id=uuid.uuid4()
         org_name=request.data('orgName')
         email=request.data('email')
         phn_no=request.data('phn_no')
         org_location=request.data('orgLocation')
+        event_id=uuid.uuid4()
         org = Organisation.objects.filter(org_name=org_name)
         if len(org)==0:
             org_id=uuid.uuid4()
