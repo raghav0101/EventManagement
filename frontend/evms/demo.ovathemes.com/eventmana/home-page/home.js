@@ -410,5 +410,11 @@ jQuery(document).ready(function ($) {
     displayAllEvents($);
     displayMostRecentEvent($);
     displayUpComingEvents($);
+    if(localStorage.getItem("userId")===null || localStorage.getItem("userId")===undefined){
+
+    }
+    else{
+        $('#rm1').empty();
+    }
    // displayMostRecentEventCountdown($);
 });

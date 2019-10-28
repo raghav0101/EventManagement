@@ -43,9 +43,9 @@
 <!--			Remember Me-->
 <!--		</label>&ndash;&gt;-->
 <!--	</p>-->
-	<p class="submit">
+	<!--<p class="submit">
 		<button type="button" name="wp-submit" id="wp-submit" class="button button-primary button-large"> Log In</button>
-	</p>
+	</p>-->
 	</form>
 
 	<script type="text/javascript">
@@ -88,7 +88,7 @@
 					};
 
 					try {
-						let response = await fetch(baseurl + '/event/getMostRecentEvents/', options);                    // give api url
+						let response = await fetch(baseurl + '/event/logIn/', options);                    // give api url
 						let jsonResponse = await response.json();
 						console.log(jsonResponse);
 
@@ -100,32 +100,42 @@
 				};
 
 				const authenticateUser = async () => {
-					let emailId = document.getElementById("user_login").value;
+					let email = document.getElementById("user_login").value;
 					let password = document.getElementById("user_pass").value;
 
-					console.log(emailId + " " + password);
+					console.log(email + " " + password);
 
 					let data = {
-						emailId: emailId,
-						password: password
+						email,
+						password
 					};
 
 					let response = await login(data);
-					let res = await response.json();
 
-					let message = response.message;
-					console.log(message);
 					console.log(response);
-					if (message === "ok") {
-						localStorage.setItem("userId",res.userId);
+					if (response) {
+						localStorage.setItem("userId",response.user_id);
 						window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
 					} else {
 						iziToast.show({
-							title:"Login Credentials do not match"
+							title:"Error",
+							message:"Please check the fields",
+							titleColor:'red',
+							backgroundColor: 'yellow',
+							onClosing: function(){
+								window.location.reload();
+							}
 						});
 					}
 
 				};
+				appendLoginInfo("loginform");
+				function appendLoginInfo(variable) {
+					console.log("hi");
+					document.getElementById(variable).innerHTML +=
+							'<p class="submit">\n' +
+							'\t\t<button type="button" name="wp-submit" id="wp-submit" class="button button-primary button-large"> Log In</button>';
+				}
 				document.getElementById("wp-submit").onclick = authenticateUser;
 			}
 			else{
@@ -138,11 +148,16 @@
 					};
 
 					try {
-						let response = await fetch(baseurl + '/event/getMostRecentEvents/', options);                    // give api url
-						let jsonResponse = await response.json();
-						console.log(jsonResponse);
+						let response = await fetch(baseurl + '/event/newUser/', options);
+						if(response.ok)
+						{
+							let jsonResponse = await response.json();
+							console.log(jsonResponse);
 
-						return jsonResponse;
+							return jsonResponse;
+						}else{
+							return null;
+						}
 					} catch (e) {
 						console.log(e);
 						return null;
@@ -150,10 +165,10 @@
 				};
 				f("txt","register");
 				const registerUser = async () => {
-					let emailId = document.getElementById("user_login").value;
+					let email = document.getElementById("user_login").value;
 					let password = document.getElementById("user_pass").value;
 					let name = document.getElementById("user_name").value;
-					let num = document.getElementById("user_number").value;
+					let phn_no = document.getElementById("user_number").value;
 					let gender;
 					if(document.getElementById('r1').checked){
 						gender = "male";
@@ -163,27 +178,33 @@
 					}
 					let dob = document.getElementById("user_dob").value;
 
-					console.log(emailId + " " + password + " "+ name + " " + num + " " + gender + " " + dob);
+					console.log(email + " " + password + " "+ name + " " + phn_no + " " + gender + " " + dob);
 
 					let data = {
-						emailId: emailId,
-						password: password,
-						name: name,
-						num: num,
-						gender: gender,
-						dob: dob
+						email,
+						password,
+						name,
+						phn_no,
+						gender,
+						dob
 					};
 
 					let response = await register(data);
 
-					let message = response.message;
-
-					if (message === "ok") {
+					if (response) {
+						/*localStorage.setItem("userId",response.user_id);*/
 						window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
 					} else {
 						iziToast.show({
-							title:"Please enter fields again"
+							title:"Error",
+							message:"Please check the fields",
+							titleColor:'red',
+							backgroundColor: 'yellow',
+							onClosing: function(){
+								window.location.reload();
+							}
 						});
+
 					}
 
 				};
@@ -209,6 +230,9 @@
 							'<p>\n\n' +
 							'\t\t<label for="user_pass">Date Of birth<br />\n' +
 							'\t\t<input type="date" name="pwd" id="user_dob" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+							'\t</p>' +
+							'<p class="submit">\n' +
+							'\t\t<button type="button" name="wp-submit" id="wp-submit" class="button button-primary button-large"> Log In</button>\n' +
 							'\t</p>';
 				}
 				document.getElementById("wp-submit").onclick = registerUser;
