@@ -156,9 +156,24 @@ class NewEvent(APIView):
         time=request.data['time']
         desc=request.data['desc']
         event_id=uuid.uuid4()
-        newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc)
-        serialized_newevent=EventSerializer(newEvent)
-        return Response(serialized_newevent,status = status.HTTP_200_OK)
+        org_name=request.data('orgName')
+        email=request.data('email')
+        phn_no=request.data('phn_no')
+        org_location=request.data('orgLocation')
+        org = Organisation.objects.filter(org_name=org_name)
+        if len(org)==0:
+            org_id=uuid.uuid4()
+            newOrg = Organisation.objects.create(org_id=org_id,org_name=org_name,email=email,phn_no=phn_no,org_location=orgLocation)
+            newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc)
+            orgEvent = Org.objects.create(event_id=newEvent,org_id=newOrg)
+            serialized_newevent=EventSerializer(newEvent)
+            return Response(serialized_newevent.data,status = status.HTTP_200_OK)
+        else:
+            newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc)
+            orgEvent = Org.objects.create(event_id=newEvent,org_id=org[0])
+            serialized_newevent=EventSerializer(newEvent)
+            return Response(serialized_newevent.data,status = status.HTTP_200_OK)
+
 
 class logIn(APIView):
     def post(self,request):
