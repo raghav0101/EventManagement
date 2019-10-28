@@ -1,12 +1,12 @@
 let baseurl = "http://localhost:8000";
 
-let  getPastEvents = async() => {
+let  getRegisteredEvents = async() => {
     let options ={
         headers: {'Content-Type': 'application/json'},
         method: 'GET'
     };
     try{
-        let response = await fetch(baseurl + '/event/getPastEvents/',options);
+        let response = await fetch(baseurl + '/event/getRegisteredEvents/',options);    // add url
         let jsonResponse = await response.json();
         console.log(jsonResponse);
 
@@ -19,11 +19,11 @@ let  getPastEvents = async() => {
 
 };
 
-let displayPastEvents = async ($) => {
-    let pastEvents = await getPastEvents();
-    console.log(pastEvents);
+let displayRegisteredEvents = async ($) => {
+    let registeredEvents = await getRegisteredEvents();
+    console.log(registeredEvents);
     // $('#eventContainer').empty();
-    pastEvents.map((element,index) => {
+    registeredEvents.map((element,index) => {
         let eventElem = ' <div class="col-md-4 col-sm-6">\n' +
             '                                            <div class="thumbnail no-border no-padding">\n' +
             '                                                <div class="media_img">\n' +
@@ -46,7 +46,7 @@ jQuery(document).ready(function ($) {
     // Your code here
     // displaySlide($);
     //generateCategoryMenu($);
-     displayPastEvents($);
+    displayRegisteredEvents($);
     // displayMostRecentEvent($);
     // displayMostRecentEventCountdown($);
 });

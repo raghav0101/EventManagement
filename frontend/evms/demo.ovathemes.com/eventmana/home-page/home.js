@@ -1,12 +1,31 @@
 let baseurl = "http://localhost:8000";
 
+let  getUpComingEvents = async() => {
+    let options ={
+        headers: {'Content-Type': 'application/json'},
+        method: 'GET'
+    };
+    try{
+        let response = await fetch(baseurl + '/event/getRecentEvents/',options);
+        let jsonResponse = await response.json();
+        console.log(jsonResponse);
+
+        return jsonResponse;
+    }
+    catch (err) {
+        console.log(err);
+        return null;
+    }
+
+};
+
 let getLatestEvent = async () => {
     let options ={
         headers: {'Content-Type': 'application/json'},
         method: 'GET'
     };
     try{
-        let response = await fetch(baseurl + '/event/getMostRecentEvents/',options);                    // give api url
+        let response = await fetch(baseurl + '/event/getMostRecentEvents/',options);
         let jsonResponse = await response.json();
         console.log(jsonResponse);
 
@@ -143,14 +162,45 @@ let getOtherEvents = async() => {
     }
 
 };
+let getEventVenue = async ($,eventId) => {
+    let options ={
+        headers: {'Content-Type': 'application/json'},
+        method: 'GET'
+    };
+    try{
+        console.log("get event:" + eventId);
+        let response = await fetch(baseurl + '/event/venue/?eventId=' +eventId +'',options);
+        console.log(response);
+        let jsonResponse = await response.json();
+        console.log(jsonResponse);
+
+        return jsonResponse;
+    }
+    catch (e) {
+        console.log(e);
+        return null;
+    }
+};
+let displayUpComingEvents = async ($) => {
+    let allEvents = await getUpComingEvents();
+    console.log(allEvents);
+    // $('#eventContainer').empty();
+    allEvents.map((element,index) => {
+        let eventElem = ' <div> '+ element.event_name +' on '+element.event_date+'</div> ';
+        $('#rotate').append(eventElem);
+    });
+};
 let displaySlide = async ($) =>{
-  let slide = [1];
-  console.log(slide);
-  slide.map((element,index) => {
-
-
-     $('#mostRecentEvent2').append(sl);
-  });
+  let event = await getLatestEvent();
+  event = event[0];
+  console.log(event);
+      var date = event.event_date.split('-');
+      $('#datetime').load(()=> {
+          $('#datetime').text(date[2]+":"+ date[1]+":"+date[0]);
+      });
+     $('#descp').text(event.event_name);
+     console.log(event.event_date);
+     console.log(event.event_name);
 };
 let displayMostRecentEventCountdown = async ($) => {
     let eventCountdown = [1];
@@ -210,19 +260,21 @@ let displayAllEvents = async ($) => {
     let allEvents = await getAllEvents();
     console.log(allEvents);
     $('#eventContainer').empty();
-    allEvents.map((element,index) => {
+    allEvents.map(async (element,index) => {
+        let venue = await getEventVenue($,element.event_id);
+        console.log(venue);
         let eventElem = '<div class="col-md-6 col-sm-6 isotope-item  playground">\n' +
             '\t\t\t\t                    <div class="thumbnail no-border no-padding">\n' +
             '\t\t\t\t                        <div class="row">\n' +
             '\t\t\t\t                            <div class="col-md-4">\n' +
             '\t\t\t\t                                <div class="media_img">\n' +
-            '\t\t\t\t                                    <img src="wp-content/uploads/2015/09/shutterstock_2564924741.jpg" alt="Boots and Hearts 2016"/>\n' +
+            '\t\t\t\t                                    <img src = "wp-content/uploads/2015/09/' + element.event_type + '.jpeg" alt="Boots and Hearts 2016" id="img1"/>\n' +
             '\t\t\t\t                                </div>\n' +
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                            <div class="col-md-8">\n' +
             '\t\t\t\t                                <div class="caption">\n' +
             '\t\t\t\t                                    <h3 class="caption-title">'+ element.event_name+'</h3>\n' +
-            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> ' + element.event_date + " at " + element.time + '  on Manhattan / New York</p>\n' +
+            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> ' + element.event_date + " at " + element.time + '  on '+ venue +'</p>\n' +
             //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
             //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
             '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
@@ -232,6 +284,7 @@ let displayAllEvents = async ($) => {
             '\t\t\t\t                    </div>\n' +
             '\t\t\t\t                </div>';
         $('#eventContainer').append(eventElem);
+        /*$('#img1').src = "wp-content/uploads/2015/09/"+ element.event_type +".jpeg";*/
     });
 };
 let displayTechnicalEvent =async ($) => {
@@ -352,9 +405,10 @@ let displayOtherEvent = async ($) => {
 
 jQuery(document).ready(function ($) {
     // Your code here
-   // displaySlide($);
+    displaySlide($);
     generateCategoryMenu($);
     displayAllEvents($);
     displayMostRecentEvent($);
+    displayUpComingEvents($);
    // displayMostRecentEventCountdown($);
 });

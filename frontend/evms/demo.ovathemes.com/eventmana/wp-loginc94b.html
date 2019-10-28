@@ -24,7 +24,7 @@
 		</head>
 	<body class="login login-action-login wp-core-ui  locale-en-us">
 		<div id="login">
-		<h1>User Login</h1>
+		<h1 id="txt"></h1>
 	<!--<div id="login_error">	User registration is currently not allowed.<br />
 </div>-->
 
@@ -37,14 +37,14 @@
 		<label for="user_pass">Password<br />
 		<input type="password" name="pwd" id="user_pass" aria-describedby="login_error" class="input" value="" size="20" /></label>
 	</p>
-	<p class="forgetmenot">
-		<label for="rememberme">
-			<input name="rememberme" type="checkbox" id="rememberme" value="forever"  />
-			Remember Me
-		</label>
-	</p>
+<!--	<p class="forgetmenot">-->
+<!--		&lt;!&ndash;<label for="rememberme">-->
+<!--			<input name="rememberme" type="checkbox" id="rememberme" value="forever"  />-->
+<!--			Remember Me-->
+<!--		</label>&ndash;&gt;-->
+<!--	</p>-->
 	<p class="submit">
-		<input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="Log In" />
+		<button type="button" name="wp-submit" id="wp-submit" class="button button-primary button-large"> Log In</button>
 	</p>
 	</form>
 
@@ -62,8 +62,8 @@
 			if(typeof wpOnload=='function')wpOnload();
 			</script>
 
-			<p id="backtoblog"><a href="index.html">
-		&larr; Back to Event Management WordPress Theme	</a></p>
+<!--			<p id="backtoblog"><a href="index.html">-->
+<!--		&larr; Back to Event Management WordPress Theme	</a></p>-->
 			
 	</div>
 
@@ -72,54 +72,162 @@
 			var wc_product_block_data = JSON.parse( decodeURIComponent( '%7B%22min_columns%22%3A1%2C%22max_columns%22%3A6%2C%22default_columns%22%3A3%2C%22min_rows%22%3A1%2C%22max_rows%22%3A6%2C%22default_rows%22%3A1%2C%22thumbnail_size%22%3A300%2C%22placeholderImgSrc%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2Fwp-content%5C%2Fuploads%5C%2Fwoocommerce-placeholder.png%22%2C%22min_height%22%3A500%2C%22default_height%22%3A500%2C%22isLargeCatalog%22%3Afalse%2C%22limitTags%22%3Afalse%2C%22hasTags%22%3Afalse%2C%22productCategories%22%3A%5B%7B%22term_id%22%3A60%2C%22name%22%3A%22Uncategorized%22%2C%22slug%22%3A%22uncategorized%22%2C%22term_group%22%3A0%2C%22term_taxonomy_id%22%3A60%2C%22taxonomy%22%3A%22product_cat%22%2C%22description%22%3A%22%22%2C%22parent%22%3A0%2C%22count%22%3A0%2C%22filter%22%3A%22raw%22%2C%22link%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2Fproduct-category%5C%2Funcategorized%5C%2F%22%7D%2C%7B%22term_id%22%3A28%2C%22name%22%3A%22event%22%2C%22slug%22%3A%22event%22%2C%22term_group%22%3A0%2C%22term_taxonomy_id%22%3A28%2C%22taxonomy%22%3A%22product_cat%22%2C%22description%22%3A%22%22%2C%22parent%22%3A0%2C%22count%22%3A9%2C%22filter%22%3A%22raw%22%2C%22link%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2Fproduct-category%5C%2Fevent%5C%2F%22%7D%5D%2C%22homeUrl%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2F%22%7D' ) );
 		</script>
 		<script>
+			let baseurl = "http://localhost:8000";
 
-			const login = async (data) => {
-				let options ={
-					headers: {'Content-Type': 'application/json'},
-					method: 'POST',
-					body: JSON.stringify(data)
+			let url = window.location.href;
+			console.log(url);
+			let action = url.split('?action=')[1];
+			console.log(action);
+			if(action==="login") {
+				f("txt","login");
+				const login = async (data) => {
+					let options = {
+						headers: {'Content-Type': 'application/json'},
+						method: 'POST',
+						body: JSON.stringify(data)
+					};
+
+					try {
+						let response = await fetch(baseurl + '/event/getMostRecentEvents/', options);                    // give api url
+						let jsonResponse = await response.json();
+						console.log(jsonResponse);
+
+						return jsonResponse;
+					} catch (e) {
+						console.log(e);
+						return null;
+					}
 				};
 
-				try{
-					let response = await fetch(baseurl + '/event/getMostRecentEvents/',options);                    // give api url
-					let jsonResponse = await response.json();
-					console.log(jsonResponse);
+				const authenticateUser = async () => {
+					let emailId = document.getElementById("user_login").value;
+					let password = document.getElementById("user_pass").value;
 
-					return jsonResponse;
-				}
-				catch (e) {
-					console.log(e);
-					return null;
-				}
-			};
+					console.log(emailId + " " + password);
 
-			const authenticateUser = async () => {
-				let emailId = document.getElementById("user_login").value;
-				let password = document.getElementById("user_pass").value;
+					let data = {
+						emailId: emailId,
+						password: password
+					};
 
-				console.log(emailId + " " + password);
+					let response = await login(data);
+					let res = await response.json();
 
-				let data = {
-					emailId: emailId,
-					password: password
+					let message = response.message;
+					console.log(message);
+					console.log(response);
+					if (message === "ok") {
+						localStorage.setItem("userId",res.userId);
+						window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
+					} else {
+						iziToast.show({
+							title:"Login Credentials do not match"
+						});
+					}
+
 				};
-
-				let response = await login(data);
-
-				let message = response.message;
-
-				if(message){
-
-				}
+				document.getElementById("wp-submit").onclick = authenticateUser;
 			}
+			else{
+				
+				const register = async (data) => {
+					let options = {
+						headers: {'Content-Type': 'application/json'},
+						method: 'POST',
+						body: JSON.stringify(data)
+					};
 
-			document.getElementById("wp-submit").onclick = authenticateUser;
+					try {
+						let response = await fetch(baseurl + '/event/getMostRecentEvents/', options);                    // give api url
+						let jsonResponse = await response.json();
+						console.log(jsonResponse);
 
+						return jsonResponse;
+					} catch (e) {
+						console.log(e);
+						return null;
+					}
+				};
+				f("txt","register");
+				const registerUser = async () => {
+					let emailId = document.getElementById("user_login").value;
+					let password = document.getElementById("user_pass").value;
+					let name = document.getElementById("user_name").value;
+					let num = document.getElementById("user_number").value;
+					let gender;
+					if(document.getElementById('r1').checked){
+						gender = "male";
+					}
+					else {
+						gender = "female";
+					}
+					let dob = document.getElementById("user_dob").value;
+
+					console.log(emailId + " " + password + " "+ name + " " + num + " " + gender + " " + dob);
+
+					let data = {
+						emailId: emailId,
+						password: password,
+						name: name,
+						num: num,
+						gender: gender,
+						dob: dob
+					};
+
+					let response = await register(data);
+
+					let message = response.message;
+
+					if (message === "ok") {
+						window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
+					} else {
+						iziToast.show({
+							title:"Please enter fields again"
+						});
+					}
+
+				};
+
+				appendLoginInfo("loginform");
+				function appendLoginInfo(variable) {
+					console.log("hi");
+					document.getElementById(variable).innerHTML +=
+							'<p>\n' +
+							'\t\t<label for="user_pass">Name<br />\n' +
+							'\t\t<input type="text" name="pwd" id="user_name" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+							'\t</p>' +
+							'<p>\n' +
+							'\t\t<label for="user_pass">Mobile Number<br />\n' +
+							'\t\t<input type="number" name="pwd" id="user_number" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+							'\t</p>' +
+							'<p>\n' +
+							'\t\t<label for="user_pass">Gender<br />\n' +
+							'\t\t  <input type="radio" name="gender" value="male" id="r1"> Male<br>\n' +
+							'  <input type="radio" name="gender" value="female" id="r2"> Female<br>\n' +
+							'</label>\n' +
+							'\t</p>' +
+							'<p>\n\n' +
+							'\t\t<label for="user_pass">Date Of birth<br />\n' +
+							'\t\t<input type="date" name="pwd" id="user_dob" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+							'\t</p>';
+				}
+				document.getElementById("wp-submit").onclick = registerUser;
+			}
+			function f(variable,action) {
+				var s = document.getElementById(variable);
+				if(action==="register"){
+					s.textContent	 = " User Registration";
+				}
+				else{
+					s.textContent = "User Login"
+				}
+				console.log(s.textContent);
+			}
 		</script>
 			<div class="clear"></div>
 	</body>
 <script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.js'></script>
 
-<!-- Mirrored from demo.ovathemes.com/eventmana/wp-login.php?registration=disabled by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 26 Oct 2019 06:07:28 GMT -->
+
 </html>
 	
