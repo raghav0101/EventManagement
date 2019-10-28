@@ -170,13 +170,13 @@ class logIn(APIView):
         if email is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         password = request.data['password']
-        user = Users.objects.filter(email=email)[0]
-        if user.count()==0:
+        user = Users.objects.filter(email=email)
+        if len(user)==0:
             return Response(status=status.HTTP_404_NOT_FOUND)
         else:
+            user = user[0]
             if user.password==password:
-                users = Users.objects.filter(user_id=user)
-                serialized_users=UsersSerializer(users)
-                return Response(serialized_users,status=status.HTTP_200_OK)
+                serialized_users=UsersSerializer(user)
+                return Response(serialized_users.data,status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_404_NOT_FOUND)

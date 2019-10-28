@@ -35,7 +35,7 @@
 		</p>
 		<p>
 			<label for="user_pass">Event Type<br />
-				<select name="evevtType" form="eventform">
+				<select name="eventType" form="eventform" id="sel">
 					<option value="Technical">Technical</option>
 					<option value="Gaming">Gaming</option>
 					<option value="Cultural">Cultural</option>
@@ -54,9 +54,24 @@
 			<label for="event_desc">Description<br />
 				<input type="text" name="log" id="event_desc" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>
 		</p>
-
+		<p>
+			<label for="user_login">Conducting Organisation Name<br />
+				<input type="text" name="log" id="orgName" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>
+		</p>
+		<p>
+			<label for="user_login">Organisation Email<br />
+				<input type="email" name="log" id="orgEmail" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>
+		</p>
+		<p>
+			<label for="user_login">Organisation Contact Number<br />
+				<input type="number" name="log" id="orgNumber" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>
+		</p>
+		<p>
+			<label for="user_login">Organisation Location<br />
+				<input type="text" name="log" id="orgLocation" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>
+		</p>
 		<p class="submit">
-			<input type="submit" name="wp-submit" id="wp-submit" class="button button-primary button-large" value="Create" />
+			<button type="button" name="wp-submit" id="wp-submit" class="button button-primary button-large"> Create</button>
 		</p>
 	</form>
 
@@ -84,49 +99,70 @@
 	var wc_product_block_data = JSON.parse( decodeURIComponent( '%7B%22min_columns%22%3A1%2C%22max_columns%22%3A6%2C%22default_columns%22%3A3%2C%22min_rows%22%3A1%2C%22max_rows%22%3A6%2C%22default_rows%22%3A1%2C%22thumbnail_size%22%3A300%2C%22placeholderImgSrc%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2Fwp-content%5C%2Fuploads%5C%2Fwoocommerce-placeholder.png%22%2C%22min_height%22%3A500%2C%22default_height%22%3A500%2C%22isLargeCatalog%22%3Afalse%2C%22limitTags%22%3Afalse%2C%22hasTags%22%3Afalse%2C%22productCategories%22%3A%5B%7B%22term_id%22%3A60%2C%22name%22%3A%22Uncategorized%22%2C%22slug%22%3A%22uncategorized%22%2C%22term_group%22%3A0%2C%22term_taxonomy_id%22%3A60%2C%22taxonomy%22%3A%22product_cat%22%2C%22description%22%3A%22%22%2C%22parent%22%3A0%2C%22count%22%3A0%2C%22filter%22%3A%22raw%22%2C%22link%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2Fproduct-category%5C%2Funcategorized%5C%2F%22%7D%2C%7B%22term_id%22%3A28%2C%22name%22%3A%22event%22%2C%22slug%22%3A%22event%22%2C%22term_group%22%3A0%2C%22term_taxonomy_id%22%3A28%2C%22taxonomy%22%3A%22product_cat%22%2C%22description%22%3A%22%22%2C%22parent%22%3A0%2C%22count%22%3A9%2C%22filter%22%3A%22raw%22%2C%22link%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2Fproduct-category%5C%2Fevent%5C%2F%22%7D%5D%2C%22homeUrl%22%3A%22http%3A%5C%2F%5C%2Fdemo.ovathemes.com%5C%2Feventmana%5C%2F%22%7D' ) );
 </script>
 <script>
-
-	const login = async (data) => {
-		let options ={
+	const createEvent = async (data) => {
+		let options = {
 			headers: {'Content-Type': 'application/json'},
 			method: 'POST',
 			body: JSON.stringify(data)
 		};
 
-		try{
-			let response = await fetch(baseurl + '/event/getMostRecentEvents/',options);                    // give api url
+		try {
+			let response = await fetch(baseurl + '/event/newEvent/', options);                    // give api url
 			let jsonResponse = await response.json();
 			console.log(jsonResponse);
 
 			return jsonResponse;
-		}
-		catch (e) {
+		} catch (e) {
 			console.log(e);
 			return null;
 		}
 	};
 
-	const authenticateUser = async () => {
-		let emailId = document.getElementById("user_login").value;
-		let password = document.getElementById("user_pass").value;
-
-		console.log(emailId + " " + password);
+	const createEventComplete = async () => {
+		let eventName = document.getElementById("user_login").value;
+		let e = document.getElementById("sel");
+		let eventType = e.options[e.selectedIndex].value;
+		let eventDate = document.getElementById("event_date").value;
+		let desc = document.getElementById("event_desc").value;
+		let time = document.getElementById("event_time").value;
+		let orgName = document.getElementById("orgName").value;
+		let email = document.getElementById("orgEmail").value;
+		let phn_no = document.getElementById("orgNumber").value;
+		let orgLocation = document.getElementById("orgLocation").value;
+		console.log(eventName + " " + eventType + " " + eventDate + " " + desc + " " + time +" "+orgName + " " + email + " " + orgLocation + " " + phn_no );
 
 		let data = {
-			emailId: emailId,
-			password: password
+			eventName,
+			eventType,
+			eventDate,
+			desc,
+			time,
+			orgName,
+			email,
+			phn_no,
+			orgLocation
 		};
 
 		let response = await login(data);
 
-		let message = response.message;
-
-		if(message){
-
+		console.log(response);
+		if (response) {
+			localStorage.setItem("userId",response.user_id);
+			window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
+		} else {
+			iziToast.show({
+				title:"Error",
+				message:"Please check the fields",
+				titleColor:'red',
+				backgroundColor: 'yellow',
+				onClosing: function(){
+					window.location.reload();
+				}
+			});
 		}
-	}
 
-	document.getElementById("wp-submit").onclick = authenticateUser;
-
+	};
+	document.getElementById("wp-submit").onclick = createEventComplete;
 </script>
 <div class="clear"></div>
 </body>
