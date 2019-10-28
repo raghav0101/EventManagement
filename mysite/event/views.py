@@ -8,6 +8,7 @@ from django.views.decorators.csrf import csrf_exempt
 from .serializers import *
 from datetime import timedelta
 import json
+import uuid
 
 # Create your views here.
 from django.http import HttpResponse
@@ -133,3 +134,44 @@ class RegisteredEvents(APIView):
 
         serialized_event=EventSerializer(events)
         return Response(serialized_event.data,status=status.HTTP_200_OK)
+
+class NewUser(APIView):
+    def post(self,request):
+        name = request.data['name']
+        email = request.data['email']
+        phn_no = request.data['phn_no']
+        gender = request.data['gender']
+        dob = request.data['dob']
+        user_id = uuid.uuid4()
+        newUser = Users.objects.create(user_id=user_id,name=name,email=email,phn_no=phn_no,gender=gender,dob=dob)
+        serialized_newuser = UsersSerializer(newUser)
+        return Response(serialized_newuser.data,status = status.HTTP_200_OK)
+
+class NewEvent(APIView):
+    def post(self,request):
+        event_name=request.data['eventName']
+        event_type=request.data['eventType']
+        event_date=request.data['eventDate']
+        time=request.data['time']
+        desc=request.data['desc']
+        event_id=uuid.uuid4()
+        newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc)
+        serialized_newevent=EventSerializer(newEvent)
+        return Response(serialized_newevent,status = status.HTTP_200_OK)
+
+class logIn(APIView):
+    def post(self,request):
+        email=request.data['email']
+        if email is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        password = request.data['password']
+        user = Users.objects.filter(email=email)[0]
+        if user.count()==0:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        else:
+            if user.password==password:
+                users = Users.objects.filter(user_id=user)
+                serialized_users=UsersSerializer(users)
+                return Response(serialized_users,status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_404_NOT_FOUND)

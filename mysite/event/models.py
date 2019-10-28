@@ -1,8 +1,9 @@
 from django.db import models
+import uuid
 
 # Create your models here.
 class Event(models.Model):
-    event_id = models.CharField(max_length=10, null=False,primary_key=True)
+    event_id = models.CharField(max_length=128, null=False,primary_key=True)
     event_name= models.CharField(max_length=50,null=False)
     event_type=models.CharField(max_length=20,null=False)
     event_date= models.DateField(null=False)
@@ -13,7 +14,7 @@ class Event(models.Model):
         return self.event_name
 
 class Organisation(models.Model):
-    org_id=models.CharField(max_length=10, null=False,primary_key=True)
+    org_id=models.CharField(max_length=128, null=False,primary_key=True)
     org_name= models.CharField(max_length=50, null=False)
     org_location= models.CharField(max_length=20, null=False)
     email=models.CharField(max_length=20, null=True)
@@ -24,19 +25,20 @@ class Org(models.Model):
     event_id = models.ForeignKey(Event, null=False, on_delete=models.CASCADE)
 
 class Users(models.Model):
-    user_id=models.CharField(max_length=10, null=False, primary_key=True)
+    user_id=models.CharField(max_length=128, null=False, primary_key=True)
     name=models.CharField(max_length=50,null=False)
     email=models.CharField(max_length=20,null=False)
     phn_no=models.CharField(max_length=10,null=False)
     gender=models.CharField(max_length=10,null=False)
     dob=models.DateField(null=False)
+    password=models.CharField(max_length=128, null=False,default = 'password')
 
 class  User(models.Model):
     user_id=models.ForeignKey(Users,null=False, on_delete=models.CASCADE)
     event_id=models.ForeignKey(Event,null=False, on_delete=models.CASCADE)
 
 class Payment(models.Model):
-    payment_id=models.CharField(max_length=10,null=False,primary_key=True)
+    payment_id=models.CharField(max_length=128,null=False,primary_key=True)
     mode=models.CharField(max_length=20,null=False)
     date=models.DateField(null=False)
     time=models.TimeField(null=False)

@@ -17,5 +17,8 @@ urlpatterns = [
     path('register/',Register.as_view()),
     path('getOrganisation/',Organis.as_view()),
     path('venue/',Ven.as_view()),
-    path('getRegisteredEvents',RegisteredEvents.as_view()),
+    path('getRegisteredEvents/',RegisteredEvents.as_view()),
+    path('newUser/',NewUser.as_view()),
+    path('newEvent/',NewEvent.as_view()),
+    path('logIn/',logIn.as_view()),
 ]
