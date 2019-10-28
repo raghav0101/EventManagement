@@ -27,7 +27,7 @@ let displayUpComingEvents = async ($) => {
         let eventElem = ' <div class="col-md-4 col-sm-6">\n' +
             '                                            <div class="thumbnail no-border no-padding">\n' +
             '                                                <div class="media_img">\n' +
-            '                                                    <img src="../wp-content/uploads/2015/09/hotel-1.jpg" alt="The World&#8217;s Greatest Tribute Bands on AXS TV">\n' +
+            '                                                    <img src = "../wp-content/uploads/2015/09/' + element.event_type + '.jpeg" alt="Boots and Hearts 2016" id="img1" style=" width: 282px; height: 282px;"/>\n' +
             '                                                </div>\n' +
             '                                                <div class="caption">\n' +
             '                                                    <h3 class="caption-title"><a href="../event/the-worlds-greatest-tribute-bands-on-axs-tv/index.html">'+element.event_name+'</a></h3>\n' +
@@ -41,12 +41,62 @@ let displayUpComingEvents = async ($) => {
         $('#allEvents').append(eventElem);
     });
 };
+let displayLogoutButton = async ($) => {
+    let otherEvents = [1];
+    //console.log(otherEvents);
+    $('#rm1').empty();
+    otherEvents.map((element,index) => {
+        let eventElem = '<li><a href="wp-loginc94b.html?action=login"><i class="fa fa-user"></i> Logout</a></li>';
+        let create = '<a data-animation="fadeInUp" data-animation-delay="100" href="wp-login989a.html" target="" class="btn btn-theme btn-theme-grey-dark btn-theme-md"><i class="fa fa-file-text-o"></i> Create Event</a>';
+        $('#rm1').append(eventElem);
+        $('#createEvent').append(create);
+    });
+};
+
+let  getUpComingEvents1 = async() => {
+    let options ={
+        headers: {'Content-Type': 'application/json'},
+        method: 'GET'
+    };
+    try{
+        let response = await fetch(baseurl + '/event/getRecentEvents/',options);
+        let jsonResponse = await response.json();
+        console.log(jsonResponse);
+
+        return jsonResponse;
+    }
+    catch (err) {
+        console.log(err);
+        return null;
+    }
+
+};
+
+let displayUpComingEvents1 = async ($) => {
+    let allEvents = await getUpComingEvents1();
+    console.log(allEvents);
+    // $('#eventContainer').empty();
+    allEvents.map((element,index) => {
+        let eventElem = ' <div> '+ element.event_name +' on '+element.event_date+'</div> ';
+        $('#rotate').append(eventElem);
+    });
+};
 
 jQuery(document).ready(function ($) {
     // Your code here
     // displaySlide($);
     //generateCategoryMenu($);
     displayUpComingEvents($);
+    displayUpComingEvents1($);
+    if(localStorage.getItem("userId")===null || localStorage.getItem("userId")===undefined){
+
+    }
+    else{
+        /*   $('#rm1').empty();
+           $('#rm1').append()*/
+        displayLogoutButton($);
+
+    }
     // displayMostRecentEvent($);
     // displayMostRecentEventCountdown($);
 });

@@ -20,7 +20,7 @@ def index(request):
 class GetAllEvents(APIView):
 
     def get(self, request):
-        all_events= Event.objects.filter(event_date__gte=date.today())
+        all_events= Event.objects.all()
         serialized_all_events = EventSerializer(all_events, many=True)
         return Response(serialized_all_events.data, status=status.HTTP_200_OK)
 
@@ -49,27 +49,27 @@ class GetRecentEvents(APIView):
 class GamingEvents(APIView):
 
     def get(self,request):
-        gaming_events=Event.objects.filter(event_type='Gaming')
+        gaming_events=Event.objects.filter(event_type='Gaming',event_date__gte=date.today())
         serialized_gaming_events=EventSerializer(gaming_events,many=True)
         return Response(serialized_gaming_events.data,status=status.HTTP_200_OK)
 
 class TechnicalEvents(APIView):
 
     def get(self,request):
-        technical_events=Event.objects.filter(event_type='Technical')
+        technical_events=Event.objects.filter(event_type='Technical',event_date__gte=date.today())
         serialized_technical_events=EventSerializer(technical_events,many=True)
         return Response(serialized_technical_events.data,status=status.HTTP_200_OK)
 
 class CulturalEvents(APIView):
 
     def get(self,request):
-        cultural_events=Event.objects.filter(event_type='Cultural')
+        cultural_events=Event.objects.filter(event_type='Cultural',event_date__gte=date.today())
         serialized_cultural_events=EventSerializer(cultural_events,many=True)
         return Response(serialized_cultural_events.data,status=status.HTTP_200_OK)
 class OtherEvents(APIView):
 
     def get(self,request):
-        other_events=Event.objects.filter(event_type='Other')
+        other_events=Event.objects.filter(event_type='Other',event_date__gte=date.today())
         serialized_other_events=EventSerializer(other_events,many=True)
         return Response(serialized_other_events.data,status=status.HTTP_200_OK)
 
@@ -90,13 +90,16 @@ class Register(APIView):
     def post(self,request):
         user_id = request.data['userId']
         event_id = request.data['eventId']
+        events = User.objects.filter(user_id=user_id,event_id=event_id)
+        if len(events)>0:
+            return Response(' ',status=status.HTTP_409_CONFLICT)
         if user_id is None or event_id is None:
              return Response(status=status.HTTP_404_NOT_FOUND)
 
         event = Event.objects.filter(pk=event_id)
         user = Users.objects.filter(pk=user_id)
         register = User.objects.create(user_id=user[0],event_id=event[0])
-        serialized_register = (register)
+        serialized_register = UserSerializer(register)
         return Response(serialized_register.data, status=status.HTTP_200_OK)
 
 class Organis(APIView):
@@ -122,17 +125,17 @@ class Ven(APIView):
         return Response(serialized_venue.data,status=status.HTTP_200_OK)
 
 class RegisteredEvents(APIView):
-    def get(self,request):
-        user_id = request.query_params['userId']
-        if event_id is None:
+    def post(self,request):
+        user_id = request.data['userId']
+        if user_id is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
-        registered=User.objects.filter(user_id='userId')
+        registered=User.objects.filter(user_id=user_id)
         events = []
         for register in registered:
-            event = Event.objects.get(pk=register.event_id.event_id)
-            events += event
+            events.append(register.event_id.event_id)
 
-        serialized_event=EventSerializer(events)
+        eventObjects = Event.objects.filter(event_id__in=events)
+        serialized_event=EventSerializer(eventObjects, many=True)
         return Response(serialized_event.data,status=status.HTTP_200_OK)
 
 class NewUser(APIView):
@@ -155,22 +158,38 @@ class NewEvent(APIView):
         event_date=request.data['eventDate']
         time=request.data['time']
         desc=request.data['desc']
-        org_name=request.data('orgName')
-        email=request.data('email')
-        phn_no=request.data('phn_no')
-        org_location=request.data('orgLocation')
+        org_name=request.data['orgName']
+        email=request.data['email']
+        phn_no=request.data['phn_no']
+        org_location=request.data['orgLocation']
+        bname=request.data['buildingName']
+        room_no=request.data['roomNo']
         event_id=uuid.uuid4()
         org = Organisation.objects.filter(org_name=org_name)
+        venue_id = Venue.objects.filter(building_name=bname, room_no=room_no)
+        conflict = Event.objects.filter(event_date=event_date)
+        ids = []
+        for i in conflict:
+            ids.append(i.event_id)
+
+        conflict_events = Where.objects.filter(venue_id=venue_id, event_id__in=ids)
+        if(len(conflict_events) > 0):
+            return Response("",status=status.HTTP_409_CONFLICT)
+
         if len(org)==0:
             org_id=uuid.uuid4()
-            newOrg = Organisation.objects.create(org_id=org_id,org_name=org_name,email=email,phn_no=phn_no,org_location=orgLocation)
-            newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc)
+            newOrg = Organisation.objects.create(org_id=org_id,org_name=org_name,email=email,phn_no=phn_no,org_location=org_location)
+            newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc,event_date=event_date)
             orgEvent = Org.objects.create(event_id=newEvent,org_id=newOrg)
+            venueEvent = Where.objects.create(event_id = newEvent,venue_id=venue_id[0])
             serialized_newevent=EventSerializer(newEvent)
             return Response(serialized_newevent.data,status = status.HTTP_200_OK)
+
+
         else:
-            newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc)
+            newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc,event_date=event_date)
             orgEvent = Org.objects.create(event_id=newEvent,org_id=org[0])
+            venueEvent = Where.objects.create(event_id = newEvent,venue_id=venue_id[0])
             serialized_newevent=EventSerializer(newEvent)
             return Response(serialized_newevent.data,status = status.HTTP_200_OK)
 

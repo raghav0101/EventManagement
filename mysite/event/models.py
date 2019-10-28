@@ -17,7 +17,7 @@ class Organisation(models.Model):
     org_id=models.CharField(max_length=128, null=False,primary_key=True)
     org_name= models.CharField(max_length=50, null=False)
     org_location= models.CharField(max_length=20, null=False)
-    email=models.CharField(max_length=20, null=True)
+    email=models.CharField(max_length=200,null=True)
     phn_no=models.CharField(max_length=10,null=False)
 
 class Org(models.Model):

@@ -268,13 +268,13 @@ let displayAllEvents = async ($) => {
             '\t\t\t\t                        <div class="row">\n' +
             '\t\t\t\t                            <div class="col-md-4">\n' +
             '\t\t\t\t                                <div class="media_img">\n' +
-            '\t\t\t\t                                    <img src = "wp-content/uploads/2015/09/' + element.event_type + '.jpeg" alt="Boots and Hearts 2016" id="img1"/>\n' +
+            '\t\t\t\t                                    <img src = "wp-content/uploads/2015/09/' + element.event_type + '.jpeg" alt="Boots and Hearts 2016" id="img1" style="width: 282px; height: 282px"/>\n' +
             '\t\t\t\t                                </div>\n' +
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                            <div class="col-md-8">\n' +
             '\t\t\t\t                                <div class="caption">\n' +
             '\t\t\t\t                                    <h3 class="caption-title">'+ element.event_name+'</h3>\n' +
-            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> ' + element.event_date + " at " + element.time + '  on '+ venue +'</p>\n' +
+            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> ' + element.event_date + " at " + element.time + '  on '+ venue.building_name +'</p>\n' +
             //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
             //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
             '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
@@ -291,19 +291,20 @@ let displayTechnicalEvent =async ($) => {
     let technicalEvents = await getTechnicalEvents();
     console.log(technicalEvents);
     $('#eventContainer').empty();
-    technicalEvents.map((element,index) => {
+    technicalEvents.map(async (element,index) => {
+        let venue = await getEventVenue($,element.event_id);
        let eventElem = '<div class="col-md-6 col-sm-6 isotope-item  playground">\n' +
            '\t\t\t\t                    <div class="thumbnail no-border no-padding">\n' +
            '\t\t\t\t                        <div class="row">\n' +
            '\t\t\t\t                            <div class="col-md-4">\n' +
            '\t\t\t\t                                <div class="media_img">\n' +
-           '\t\t\t\t                                    <img src="wp-content/uploads/2015/09/shutterstock_2564924741.jpg" alt="Boots and Hearts 2016"/>\n' +
+           '\t\t\t\t                                    <img src = "wp-content/uploads/2015/09/' + element.event_type + '.jpeg" alt="Boots and Hearts 2016" id="img1"style="width: 282px; height: 282px"/>' +
            '\t\t\t\t                                </div>\n' +
            '\t\t\t\t                            </div>\n' +
            '\t\t\t\t                            <div class="col-md-8">\n' +
            '\t\t\t\t                                <div class="caption">\n' +
            '\t\t\t\t                                    <h3 class="caption-title">'+ element.event_name+'</h3>\n' +
-           '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i>' + element.event_date + " at " + element.time + '  on Manhattan / New York</p>\n' +
+           '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i>' + element.event_date + " at " + element.time + '  on '+ venue.building_name +'</p>\n' +
            //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
            //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
            '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
@@ -320,19 +321,20 @@ let displayGamingEvent = async ($) => {
     let gamingEvents = await getGamingEvents();
     console.log(gamingEvents);
     $('#eventContainer').empty();
-    gamingEvents.map((element,index) => {
+    gamingEvents.map(async (element,index) => {
+        let venue = await getEventVenue($,element.event_id);
         let eventElem = '<div class="col-md-6 col-sm-6 isotope-item  playground">\n' +
             '\t\t\t\t                    <div class="thumbnail no-border no-padding">\n' +
             '\t\t\t\t                        <div class="row">\n' +
             '\t\t\t\t                            <div class="col-md-4">\n' +
             '\t\t\t\t                                <div class="media_img">\n' +
-            '\t\t\t\t                                    <img src="wp-content/uploads/2015/09/shutterstock_2564924741.jpg" alt="Boots and Hearts 2016"/>\n' +
+            '\t\t\t\t                                    <img src = "wp-content/uploads/2015/09/' + element.event_type + '.jpeg" alt="Boots and Hearts 2016" id="img1" style="width: 282px; height: 282px"/>\n' +
             '\t\t\t\t                                </div>\n' +
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                            <div class="col-md-8">\n' +
             '\t\t\t\t                                <div class="caption">\n' +
             '\t\t\t\t                                    <h3 class="caption-title"><a href="event/boots-and-hearts-2016/index.html">'+ element.event_name+'</a></h3>\n' +
-            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i>' + element.event_date + " at " + element.time + '  on Manhattan / New York</p>\n' +
+            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i>' + element.event_date + " at " + element.time + '  on '+ venue.building_name +'</p>\n' +
             //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
             //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
             '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
@@ -349,19 +351,20 @@ let displayCulturalEvent = async ($) => {
     let culturalEvents = await getCulturalEvents();
     console.log(culturalEvents);
     $('#eventContainer').empty();
-    culturalEvents.map((element,index) => {
+    culturalEvents.map(async (element,index) => {
+        let venue = await getEventVenue($,element.event_id);
         let eventElem = '<div class="col-md-6 col-sm-6 isotope-item  playground">\n' +
             '\t\t\t\t                    <div class="thumbnail no-border no-padding">\n' +
             '\t\t\t\t                        <div class="row">\n' +
             '\t\t\t\t                            <div class="col-md-4">\n' +
             '\t\t\t\t                                <div class="media_img">\n' +
-            '\t\t\t\t                                    <img src="wp-content/uploads/2015/09/shutterstock_2564924741.jpg" alt="Boots and Hearts 2016"/>\n' +
+            '\t\t\t\t                                    <img src = "wp-content/uploads/2015/09/' + element.event_type + '.jpeg" alt="Boots and Hearts 2016" id="img1" style="width: 282px; height: 282px"/>\n' +
             '\t\t\t\t                                </div>\n' +
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                            <div class="col-md-8">\n' +
             '\t\t\t\t                                <div class="caption">\n' +
             '\t\t\t\t                                    <h3 class="caption-title"><a href="event/boots-and-hearts-2016/index.html">'+ element.event_name+'</a></h3>\n' +
-            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> ' + element.event_date + " at " + element.time + '  on Manhattan / New York</p>\n' +
+            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i> ' + element.event_date + " at " + element.time + '  on '+ venue.building_name +'</p>\n' +
             //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
             //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
             '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
@@ -378,19 +381,20 @@ let displayOtherEvent = async ($) => {
     let otherEvents = await getOtherEvents();
     console.log(otherEvents);
     $('#eventContainer').empty();
-    otherEvents.map((element,index) => {
+    otherEvents.map(async (element,index) => {
+        let venue = await getEventVenue($,element.event_id);
         let eventElem = '<div class="col-md-6 col-sm-6 isotope-item  playground">\n' +
             '\t\t\t\t                    <div class="thumbnail no-border no-padding">\n' +
             '\t\t\t\t                        <div class="row">\n' +
             '\t\t\t\t                            <div class="col-md-4">\n' +
             '\t\t\t\t                                <div class="media_img">\n' +
-            '\t\t\t\t                                    <img src="wp-content/uploads/2015/09/shutterstock_2564924741.jpg" alt="Boots and Hearts 2016"/>\n' +
+            '\t\t\t\t                                    <img src = "wp-content/uploads/2015/09/' + element.event_type + '.jpeg" alt="Boots and Hearts 2016" id="img1" style="width: 282px; height: 282px"/>\n' +
             '\t\t\t\t                                </div>\n' +
             '\t\t\t\t                            </div>\n' +
             '\t\t\t\t                            <div class="col-md-8">\n' +
             '\t\t\t\t                                <div class="caption">\n' +
             '\t\t\t\t                                    <h3 class="caption-title"><a href="event/boots-and-hearts-2016/index.html">'+ element.event_name+'</a></h3>\n' +
-            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i>' + element.event_date + " at " + element.time + '  on Manhattan / New York</p>\n' +
+            '\t\t\t\t                                    <p class="caption-category"><i class="fa fa-file-text-o"></i>' + element.event_date + " at " + element.time + '  on '+ venue.building_name +'</p>\n' +
             //'\t\t\t\t                                    <p class="caption-price">Tickets from $52</p>\n' +
             //'\t\t\t\t                                    <p class="caption-text">Fusce pellentesque velvitae tincidunt egestas. Pellentesque habitant morbi.</p>\n' +
                 '\t\t\t\t                                    <p class="caption-more"><a href="event/boots-and-hearts-2016/index.html?eventId=' + element.event_id + '" class="btn btn-theme">Tickets & Details</a></p>\n' +
@@ -406,11 +410,19 @@ let displayLogoutButton = async ($) => {
     let otherEvents = [1];
     //console.log(otherEvents);
     $('#rm1').empty();
-    otherEvents.map((element,index) => {
-        let eventElem = '<li><a href="wp-loginc94b.html?action=login"><i class="fa fa-user"></i> Logout</a></li>';
+    otherEvents.map(async (element,index) => {
+        let venue = await getEventVenue($,element.event_id);
+        let eventElem = '<li><i class="fa fa-user" id="logo"></i> Logout</a></li>';
+        let create = '<a data-animation="fadeInUp" data-animation-delay="100" href="wp-login989a.html" target="" class="btn btn-theme btn-theme-grey-dark btn-theme-md"><i class="fa fa-file-text-o"></i> Create Event</a>';
         $('#rm1').append(eventElem);
+        $('#createEvent').append(create);
+        $('#logo').click(() =>{
+            localStorage.clear();
+            window.location = "http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html";
+        });
     });
 };
+
 jQuery(document).ready(function ($) {
     // Your code here
     displaySlide($);
