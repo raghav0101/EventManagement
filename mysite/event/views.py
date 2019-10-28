@@ -142,8 +142,9 @@ class NewUser(APIView):
         phn_no = request.data['phn_no']
         gender = request.data['gender']
         dob = request.data['dob']
+        password = request.data['password']
         user_id = uuid.uuid4()
-        newUser = Users.objects.create(user_id=user_id,name=name,email=email,phn_no=phn_no,gender=gender,dob=dob)
+        newUser = Users.objects.create(user_id=user_id,name=name,email=email,phn_no=phn_no,gender=gender,dob=dob,password=password)
         serialized_newuser = UsersSerializer(newUser)
         return Response(serialized_newuser.data,status = status.HTTP_200_OK)
 
@@ -155,6 +156,10 @@ class NewEvent(APIView):
         time=request.data['time']
         desc=request.data['desc']
         event_id=uuid.uuid4()
+        org_name=request.data('orgName')
+        email=request.data('email')
+        phn_no=request.data('phn_no')
+        org = Organisation.objects.filter(org_name=org_name)[0]
         newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc)
         serialized_newevent=EventSerializer(newEvent)
         return Response(serialized_newevent,status = status.HTTP_200_OK)
