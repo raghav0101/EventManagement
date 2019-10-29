@@ -67,10 +67,14 @@ let displayLogoutButton = async ($) => {
     //console.log(otherEvents);
     $('#rm1').empty();
     otherEvents.map((element,index) => {
-        let eventElem = '<li><a href="wp-loginc94b.html?action=login"><i class="fa fa-user"></i> Logout</a></li>';
+        let eventElem = '<li><i class="fa fa-user" id="logo"></i> Logout</li>';
         let create = '<a data-animation="fadeInUp" data-animation-delay="100" href="wp-login989a.html" target="" class="btn btn-theme btn-theme-grey-dark btn-theme-md"><i class="fa fa-file-text-o"></i> Create Event</a>';
         $('#rm1').append(eventElem);
         $('#createEvent').append(create);
+    });
+    $('#logo').click(() =>{
+        localStorage.clear();
+        window.location = "http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html";
     });
 };
 

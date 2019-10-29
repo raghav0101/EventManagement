@@ -140,10 +140,13 @@ const registerEventComplete = async ($,eventId) => {
 
 const displayPicture = async ($,eventId) => {
 
+    console.log(eventId);
     let event = await getEvent($,eventId);
-    console.log(event);
-    //let element = '<img src = "../../wp-content/uploads/2015/09/' + event.event_type + '.jpeg" alt="Boots and Hearts 2016" id="img1" style="width: 282px; height: 282px"/>\n'
-    $('#akhri').attr(   "src",'../../wp-content/uploads/2015/09/' + event.event_type + '.jpeg');
+    event = event[0];
+    console.log(event.event_type);
+    let element = '<img src = "" alt="Boots and Hearts 2016" id="img1" style="width: 282px; height: 282px"/>\n';
+    $('#akhri').append(element);
+    $('#img1').attr("src","http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/wp-content/uploads/2015/09/" + event.event_type + ".jpeg");
 
 };
 
@@ -152,10 +155,14 @@ let displayLogoutButton = async ($) => {
     //console.log(otherEvents);
     $('#rm1').empty();
     otherEvents.map((element,index) => {
-        let eventElem = '<li><a href="wp-loginc94b.html?action=login"><i class="fa fa-user"></i> Logout</a></li>';
+        let eventElem = '<li><i class="fa fa-user" id="logo"></i> Logout</li>';
         let create = '<a data-animation="fadeInUp" data-animation-delay="100" href="wp-login989a.html" target="" class="btn btn-theme btn-theme-grey-dark btn-theme-md"><i class="fa fa-file-text-o"></i> Create Event</a>';
         $('#rm1').append(eventElem);
         $('#createEvent').append(create);
+    });
+    $('#logo').click(() =>{
+        localStorage.clear();
+        window.location = "http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html";
     });
 };
 
@@ -187,7 +194,9 @@ let displayUpComingEvents = async ($) => {
         $('#rotate').append(eventElem);
     });
 };
-
+let notDisplayRegister = async ($) => {
+    $('#reg').remove();
+};
 jQuery(document).ready(function ($) {
     // Your code here
     let url = window.location.href;
@@ -199,10 +208,10 @@ jQuery(document).ready(function ($) {
     $('#reg').click( ( ) => {
        registerEventComplete($,eventId);
     }) ;
-    displayPicture($,eventId);
+   // displayPicture($,eventId);
     displayUpComingEvents($);
     if(localStorage.getItem("userId")===null || localStorage.getItem("userId")===undefined){
-
+        notDisplayRegister($);
     }
     else{
         /*   $('#rm1').empty();

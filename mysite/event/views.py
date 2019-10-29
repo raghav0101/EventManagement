@@ -168,11 +168,8 @@ class NewEvent(APIView):
         org = Organisation.objects.filter(org_name=org_name)
         venue_id = Venue.objects.filter(building_name=bname, room_no=room_no)
         conflict = Event.objects.filter(event_date=event_date)
-        ids = []
-        for i in conflict:
-            ids.append(i.event_id)
 
-        conflict_events = Where.objects.filter(venue_id=venue_id, event_id__in=ids)
+        conflict_events = Where.objects.filter(venue_id=venue_id[0], event_id__in=conflict)
         if(len(conflict_events) > 0):
             return Response("",status=status.HTTP_409_CONFLICT)
 
