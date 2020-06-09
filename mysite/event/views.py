@@ -158,8 +158,6 @@ class NewUser(APIView):
             org_location=request.data['orgLocation']
             email=request.data['email']
             phn_no=request.data['phn_no']
-            gender = request.data['gender']
-            dob = request.data['dob']
             password = request.data['password']
             newOrg = Organisation.objects.create(org_id=org_id,org_name=org_name,email=email,phn_no=phn_no,org_location=org_location,password=password)
             serialized_neworg = OrganisationSerializer(newOrg)
