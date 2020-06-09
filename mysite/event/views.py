@@ -140,16 +140,30 @@ class RegisteredEvents(APIView):
 
 class NewUser(APIView):
     def post(self,request):
-        name = request.data['name']
-        email = request.data['email']
-        phn_no = request.data['phn_no']
-        gender = request.data['gender']
-        dob = request.data['dob']
-        password = request.data['password']
-        user_id = uuid.uuid4()
-        newUser = Users.objects.create(user_id=user_id,name=name,email=email,phn_no=phn_no,gender=gender,dob=dob,password=password)
-        serialized_newuser = UsersSerializer(newUser)
-        return Response(serialized_newuser.data,status = status.HTTP_200_OK)
+        user_type = request.data['user_type']
+        if user_type == 'Individual':
+            name = request.data['name']
+            email = request.data['email']
+            phn_no = request.data['phn_no']
+            gender = request.data['gender']
+            dob = request.data['dob']
+            password = request.data['password']
+            user_id = uuid.uuid4()
+            newUser = Users.objects.create(user_id=user_id,name=name,email=email,phn_no=phn_no,gender=gender,dob=dob,password=password)
+            serialized_newuser = UsersSerializer(newUser)
+            return Response(serialized_newuser.data,status = status.HTTP_200_OK)
+        else:
+            org_id=uuid.uuid4()
+            org_name=request.data['orgName']
+            org_location=request.data['orgLocation']
+            email=request.data['email']
+            phn_no=request.data['phn_no']
+            newOrg = Organisation.objects.create(org_id=org_id,org_name=org_name,email=email,phn_no=phn_no,org_location=org_location)
+            newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc,event_date=event_date)
+            orgEvent = Org.objects.create(event_id=newEvent,org_id=newOrg)
+            venueEvent = Where.objects.create(event_id = newEvent,venue_id=venue_id[0])
+            serialized_newevent=EventSerializer(newEvent)
+            return Response(serialized_newevent.data,status = status.HTTP_200_OK)
 
 class NewEvent(APIView):
     def post(self,request):
@@ -207,3 +221,17 @@ class logIn(APIView):
                 return Response(serialized_users.data,status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_404_NOT_FOUND)
+
+class getType(APIView):
+    def get(self,request):
+        user_id = request.data['userId']
+        org = Organisation.objects.filter(user_id = org_id)
+        if len(org) ==0:
+            individual = Users.objects.filter(user_id = user_id)
+            if len(individual)==0:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            else:
+                return HttpResponse('Individual')
+        else:
+            return HttpResponse('Organisation')
+
