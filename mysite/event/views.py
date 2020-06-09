@@ -158,12 +158,12 @@ class NewUser(APIView):
             org_location=request.data['orgLocation']
             email=request.data['email']
             phn_no=request.data['phn_no']
-            newOrg = Organisation.objects.create(org_id=org_id,org_name=org_name,email=email,phn_no=phn_no,org_location=org_location)
-            newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc,event_date=event_date)
-            orgEvent = Org.objects.create(event_id=newEvent,org_id=newOrg)
-            venueEvent = Where.objects.create(event_id = newEvent,venue_id=venue_id[0])
-            serialized_newevent=EventSerializer(newEvent)
-            return Response(serialized_newevent.data,status = status.HTTP_200_OK)
+            gender = request.data['gender']
+            dob = request.data['dob']
+            password = request.data['password']
+            newOrg = Organisation.objects.create(org_id=org_id,org_name=org_name,email=email,phn_no=phn_no,org_location=org_location,password=password)
+            serialized_neworg = OrganisationSerializer(newOrg)
+            return Response(serialized_neworg.data,status = status.HTTP_200_OK)
 
 class NewEvent(APIView):
     def post(self,request):
@@ -211,9 +211,18 @@ class logIn(APIView):
         if email is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         password = request.data['password']
+        org = Organisation.objects.filter(email=email)
         user = Users.objects.filter(email=email)
         if len(user)==0:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            if len(org)==0:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            else:
+                org = org[0]
+                if org.password==password:
+                    serialized_org=OrganisationSerializer(org)
+                    return Response(serialized_org.data,status=status.HTTP_200_OK)
+                else:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
         else:
             user = user[0]
             if user.password==password:
