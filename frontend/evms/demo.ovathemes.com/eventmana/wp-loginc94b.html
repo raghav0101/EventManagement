@@ -76,8 +76,12 @@
 
 			let url = window.location.href;
 			console.log(url);
-			let action = url.split('?action=')[1];
+			let dummy = url.split('?action=')[1];
+			console.log(dummy);
+			let action = dummy.split('?type=')[0];
 			console.log(action);
+			let type = dummy.split('?type=')[1];
+			console.log(type);
 			if(action==="login") {
 				f("txt","login");
 				const login = async (data) => {
@@ -165,95 +169,162 @@
 				};
 				f("txt","register");
 				const registerUser = async () => {
+					console.log('hi3');
 					let email = document.getElementById("user_login").value;
 					let password = document.getElementById("user_pass").value;
 					let name = document.getElementById("user_name").value;
 					let phn_no = document.getElementById("user_number").value;
-					let gender;
-					if(document.getElementById('r1').checked){
-						gender = "male";
+
+					//let user_type;
+					// if(document.getElementById('reg1').checked){
+					// 	user_type = "Organisation";
+					// }
+					// else {
+					// 	user_type = "Individual";
+					// }
+					if (type === 'Individual') {
+						let dob = document.getElementById("user_dob").value;
+						let gender;
+						if (document.getElementById('r1').checked) {
+							gender = "male";
+						} else {
+							gender = "female";
+						}
+						console.log(email + " " + password + " "+ name + " " + phn_no + " " + gender + " " + dob + " " + type);
+						let data = {
+							email,
+							password,
+							name,
+							phn_no,
+							gender,
+							dob,
+							type,
+						};
+						let response = await register(data);
+
+						if (response) {
+							/*localStorage.setItem("userId",response.user_id);*/
+							window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
+						} else {
+							iziToast.show({
+								title:"Error",
+								message:"Please check the fields",
+								titleColor:'red',
+								backgroundColor: 'yellow',
+								onClosing: function(){
+									//window.location.reload();
+								}
+							});
+
+						}
 					}
 					else {
-						gender = "female";
-					}
-					let dob = document.getElementById("user_dob").value;
-					let user_type;
-					if(document.getElementById('reg1').checked){
-						user_type = "Organisation";
-					}
-					else{
-						user_type = "Individual";
-					}
-					if(document.getElementById('reg2').checked){
-						gender = "male";
-					}
-					else {
-						gender = "female";
-					}
+						let loc = document.getElementById("location").value;
+						console.log('hi4');
+						let data = {
+							email,
+							password,
+							name,
+							phn_no,
+							loc,
+							type,
+						};
 
-					console.log(email + " " + password + " "+ name + " " + phn_no + " " + gender + " " + dob + " " + user_type);
+						let response = await register(data);
 
-					let data = {
-						email,
-						password,
-						name,
-						phn_no,
-						gender,
-						dob,
-						user_type,
-					};
+						if (response) {
+							/*localStorage.setItem("userId",response.user_id);*/
+							window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
+						} else {
+							iziToast.show({
+								title: "Error",
+								message: "Please check the fields",
+								titleColor: 'red',
+								backgroundColor: 'yellow',
+								onClosing: function () {
+									//window.location.reload();
+								}
+							});
 
-					let response = await register(data);
-
-					if (response) {
-						/*localStorage.setItem("userId",response.user_id);*/
-						window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
-					} else {
-						iziToast.show({
-							title:"Error",
-							message:"Please check the fields",
-							titleColor:'red',
-							backgroundColor: 'yellow',
-							onClosing: function(){
-								window.location.reload();
-							}
-						});
-
+						}
 					}
-
 				};
 
 				appendLoginInfo("loginform");
 				function appendLoginInfo(variable) {
 					console.log("hi");
-					document.getElementById(variable).innerHTML +=
-							'<p>\n' +
-							'\t\t<label for="user_pass">Name<br />\n' +
-							'\t\t<input type="text" name="pwd" id="user_name" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
-							'\t</p>' +
-							'<p>\n' +
-							'\t\t<label for="user_pass">Mobile Number<br />\n' +
-							'\t\t<input type="number" name="pwd" id="user_number" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
-							'\t</p>' +
-							'<p>\n' +
-							'\t\t<label for="user_pass">Gender<br />\n' +
-							'\t\t  <input type="radio" name="gender" value="male" id="r1"> Male<br>\n' +
-							'  <input type="radio" name="gender" value="female" id="r2"> Female<br>\n' +
-							'</label>\n' +
-							'\t</p>' +
-							'<p>\n\n' +
-							'\t\t<label for="user_pass">Date Of birth<br />\n' +
-							'\t\t<input type="date" name="pwd" id="user_dob" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
-							'\t</p>' +
-							'<p>\n' +
-							'\t\t<label for="register_as">Register As<br />\n' +
-							'\t\t  <input type="radio" name="register" value="organisation" id="reg1"> Organisation <br>\n' +
-							'  <input type="radio" name="register" value="Individual" id="reg2"> Individual <br>\n' +
-							'</label>\n' +
-							'\t</p>' +
-							'<p class="submit">\n' +
-							'\t\t<button type="button" name="wp-submit" id="wp-submit" class="button button-primary button-large"> Log In</button>\n' +
-							'\t</p>';
+					let url = window.location.href;
+					console.log(url);
+					let dummy = url.split('?action=')[1];
+					console.log(dummy);
+					let action = dummy.split('?type=')[0];
+					console.log(action);
+					let type = dummy.split('?type=')[1];
+					console.log(type);
+					if (type==='Individual') {
+						document.getElementById(variable).innerHTML +=
+								'<p>\n' +
+								'\t\t<label for="user_pass">Name<br />\n' +
+								'\t\t<input type="text" name="pwd" id="user_name" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+								'\t</p>' +
+								'<p>\n' +
+								'\t\t<label for="user_pass">Mobile Number<br />\n' +
+								'\t\t<input type="number" name="pwd" id="user_number" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+								'\t</p>' +
+								'<p>\n' +
+								'\t\t<label for="user_pass">Gender<br />\n' +
+								'\t\t  <input type="radio" name="gender" value="male" id="r1"> Male<br>\n' +
+								'  <input type="radio" name="gender" value="female" id="r2"> Female<br>\n' +
+								'</label>\n' +
+								'\t</p>' +
+								'<p>\n\n' +
+								'\t\t<label for="user_pass">Date Of birth<br />\n' +
+								'\t\t<input type="date" name="pwd" id="user_dob" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+								'\t</p>' +
+								// '<p>\n' +
+								// '\t\t<label for="register_as">Register As<br />\n' +
+								// '\t\t  <input type="radio" name="register" value="organisation" id="reg1"> Organisation <br>\n' +
+								// '  <input type="radio" name="register" value="Individual" id="reg2"> Individual <br>\n' +
+								// '</label>\n' +
+								'\t</p>' +
+								'<p class="submit">\n' +
+								'\t\t<button type="button" name="wp-submit" id="wp-submit" class="button button-primary button-large"> Log In</button>\n' +
+								'\t</p>';
+					}
+					else{
+						document.getElementById(variable).innerHTML +=
+								'<p>\n' +
+								'\t\t<label for="user_pass">Name<br />\n' +
+								'\t\t<input type="text" name="pwd" id="user_name" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+								'\t</p>' +
+								'<p>\n' +
+								'\t\t<label for="user_pass">Mobile Number<br />\n' +
+								'\t\t<input type="number" name="pwd" id="user_number" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+								'\t</p>' +
+								'<p>\n' +
+								'\t\t<label for="location">Location<br />\n' +
+								'\t\t<input type="text" name="pwd" id="location" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+								'\t</p>' +
+								// '<p>\n' +
+								// '\t\t<label for="user_pass">Gender<br />\n' +
+								// '\t\t  <input type="radio" name="gender" value="male" id="r1"> Male<br>\n' +
+								// '  <input type="radio" name="gender" value="female" id="r2"> Female<br>\n' +
+								// '</label>\n' +
+								// '\t</p>' +
+								// '<p>\n\n' +
+								// '\t\t<label for="user_pass">Date Of birth<br />\n' +
+								// '\t\t<input type="date" name="pwd" id="user_dob" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+								// '\t</p>' +
+								// '<p>\n' +
+								// '\t\t<label for="register_as">Register As<br />\n' +
+								// '\t\t  <input type="radio" name="register" value="organisation" id="reg1"> Organisation <br>\n' +
+								// '  <input type="radio" name="register" value="Individual" id="reg2"> Individual <br>\n' +
+								// '</label>\n' +
+								'\t</p>' +
+								'<p class="submit">\n' +
+								'\t\t<button type="button" name="wp-submit" id="wp-submit" class="button button-primary button-large"> Log In</button>\n' +
+								'\t</p>';
+					}
 				}
 				document.getElementById("wp-submit").onclick = registerUser;
 			}
