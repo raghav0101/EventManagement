@@ -4,12 +4,12 @@ insert into event_event values('e102','star_ladder','Gaming','2019-11-09','09:00
 insert into event_event values('e103','dance_competition','Cultural','2019-11-08','18:00:00','The prestigious dance crew is organising branch wise dance competition in the college.');
 insert into event_event values('e104','Iris_meet','Technical','2019-11-18','14:00:00','Meet for the executive members of iris nitk on further development of iris.');
 insert into event_event values('e105','concert','Cultural','2019-12-31','22:00:00','Music club is going to organise concert in the college on new years eve.');
-create table event_organisation(org_id varchar(128) not null,org_name varchar(50) not null,org_location varchar(20) not null,email varchar(200),phn_no varchar(10) not null,primary key(org_id));
-insert into event_organisation values('o101','Iris','NITK','iris@nitk.edu.in','9875623534');
-insert into event_organisation values('o102','IE','NITK','ienitk@gmail.com','6723734672');
-insert into event_organisation values('o103','IEEE','NITK','ieee@nitk.edu.in','5234523456');
-insert into event_organisation values('o104','Music Club','NITK','musicc@gmail.com','9887235423');
-insert into event_organisation values('o105','Dance Crew','NITK','dancers@nitk.edu.in','9855463412');
+create table event_organisation(org_id varchar(128) not null,org_name varchar(50) not null,org_location varchar(20) not null,email varchar(200),phn_no varchar(10) not null,password varchar(128) default 'password',primary key(org_id));
+insert into event_organisation values('o101','Iris','NITK','iris@nitk.edu.in','9875623534','password');
+insert into event_organisation values('o102','IE','NITK','ienitk@gmail.com','6723734672','password');
+insert into event_organisation values('o103','IEEE','NITK','ieee@nitk.edu.in','5234523456','password');
+insert into event_organisation values('o104','Music Club','NITK','musicc@gmail.com','9887235423','password');
+insert into event_organisation values('o105','Dance Crew','NITK','dancers@nitk.edu.in','9855463412','password');
 create table event_org(id varchar(128) not null,event_id_id varchar(128) not null,org_id_id varchar(128),primary key (id),foreign key (event_id_id) references event_event(event_id),foreign key (org_id_id) references event_organisation(org_id));
 insert into event_org (id,event_id_id, org_id_id) values('1','e104','o101');
 insert into event_org (id,event_id_id, org_id_id) values('2','e101','o102');
@@ -38,6 +38,24 @@ insert into event_users values('u102','Raghav','raghav@gmail.com','9876543210','
 insert into event_users values('u103','Nisarg','nisarg10@gmail.com','9875643210','M','1999-05-13','password');
 insert into event_users values('u104','Avdhesh','apsy@gmail.com','9870606542','M','1998-04-03','password');
 create table event_user(id varchar(128) not null,event_id_id varchar(128) not null,user_id_id varchar(128) not null,primary key (id),foreign key(event_id_id) references event_event (event_id),foreign key (user_id_id) references event_users(user_id));
+<<<<<<< HEAD
+insert into event_user(event_id_id, user_id_id) values('1','e101','u101');
+insert into event_user(event_id_id, user_id_id) values('2','e101','u102');
+insert into event_user(event_id_id, user_id_id) values('3','e102','u103');
+insert into event_user(event_id_id, user_id_id) values('4','e102','u101');
+insert into event_user(event_id_id, user_id_id) values('5','e105','u102');
+insert into event_user(event_id_id, user_id_id) values('6','e104','u102');
+insert into event_user(event_id_id, user_id_id) values('7','e104','u104');
+insert into event_user(event_id_id, user_id_id) values('8','e103','u104');
+insert into event_user(event_id_id, user_id_id) values('9','e102','u104');
+insert into event_user(event_id_id, user_id_id) values('10','e101','u104');
+create table event_where(id varchar(128),event_id_id varchar(128) not null,venue_id_id varchar(128) not null,primary key(id),foreign key(event_id_id) references event_event(event_id),foreign key(venue_id_id) references event_venue(venue_id));
+insert into event_where(event_id_id, venue_id_id) values('1','e101','v102');
+insert into event_where(event_id_id, venue_id_id) values('2','e102','v108');
+insert into event_where(event_id_id, venue_id_id) values('3','e103','v101');
+insert into event_where(event_id_id, venue_id_id) values('4','e104','v114');
+insert into event_where(event_id_id, venue_id_id) values('5','e105','v113');
+=======
 insert into event_user(id,event_id_id, user_id_id) values('1','e101','u101');
 insert into event_user(id,event_id_id, user_id_id) values('2','e101','u102');
 insert into event_user(id,event_id_id, user_id_id) values('3','e102','u103');
@@ -54,6 +72,7 @@ insert into event_where(id,event_id_id, venue_id_id) values('2','e102','v108');
 insert into event_where(id,event_id_id, venue_id_id) values('3','e103','v101');
 insert into event_where(id,event_id_id, venue_id_id) values('4','e104','v114');
 insert into event_where(id,event_id_id, venue_id_id) values('5','e105','v113');
+>>>>>>> b0c8bda717262b34d34b773cd170fdc6e4cb7d5e
 // DO NOT RUN THIS
 set foreign_key_checks=0;
 truncate table event_event;

@@ -140,16 +140,28 @@ class RegisteredEvents(APIView):
 
 class NewUser(APIView):
     def post(self,request):
-        name = request.data['name']
-        email = request.data['email']
-        phn_no = request.data['phn_no']
-        gender = request.data['gender']
-        dob = request.data['dob']
-        password = request.data['password']
-        user_id = uuid.uuid4()
-        newUser = Users.objects.create(user_id=user_id,name=name,email=email,phn_no=phn_no,gender=gender,dob=dob,password=password)
-        serialized_newuser = UsersSerializer(newUser)
-        return Response(serialized_newuser.data,status = status.HTTP_200_OK)
+        user_type = request.data['user_type']
+        if user_type == 'Individual':
+            name = request.data['name']
+            email = request.data['email']
+            phn_no = request.data['phn_no']
+            gender = request.data['gender']
+            dob = request.data['dob']
+            password = request.data['password']
+            user_id = uuid.uuid4()
+            newUser = Users.objects.create(user_id=user_id,name=name,email=email,phn_no=phn_no,gender=gender,dob=dob,password=password)
+            serialized_newuser = UsersSerializer(newUser)
+            return Response(serialized_newuser.data,status = status.HTTP_200_OK)
+        else:
+            org_id=uuid.uuid4()
+            org_name=request.data['orgName']
+            org_location=request.data['orgLocation']
+            email=request.data['email']
+            phn_no=request.data['phn_no']
+            password = request.data['password']
+            newOrg = Organisation.objects.create(org_id=org_id,org_name=org_name,email=email,phn_no=phn_no,org_location=org_location,password=password)
+            serialized_neworg = OrganisationSerializer(newOrg)
+            return Response(serialized_neworg.data,status = status.HTTP_200_OK)
 
 class NewEvent(APIView):
     def post(self,request):
@@ -197,9 +209,18 @@ class logIn(APIView):
         if email is None:
             return Response(status=status.HTTP_404_NOT_FOUND)
         password = request.data['password']
+        org = Organisation.objects.filter(email=email)
         user = Users.objects.filter(email=email)
         if len(user)==0:
-            return Response(status=status.HTTP_404_NOT_FOUND)
+            if len(org)==0:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            else:
+                org = org[0]
+                if org.password==password:
+                    serialized_org=OrganisationSerializer(org)
+                    return Response(serialized_org.data,status=status.HTTP_200_OK)
+                else:
+                    return Response(status=status.HTTP_404_NOT_FOUND)
         else:
             user = user[0]
             if user.password==password:
@@ -207,3 +228,17 @@ class logIn(APIView):
                 return Response(serialized_users.data,status=status.HTTP_200_OK)
             else:
                 return Response(status=status.HTTP_404_NOT_FOUND)
+
+class getType(APIView):
+    def get(self,request):
+        user_id = request.data['userId']
+        org = Organisation.objects.filter(user_id = org_id)
+        if len(org) ==0:
+            individual = Users.objects.filter(user_id = user_id)
+            if len(individual)==0:
+                return Response(status=status.HTTP_404_NOT_FOUND)
+            else:
+                return HttpResponse('Individual')
+        else:
+            return HttpResponse('Organisation')
+
