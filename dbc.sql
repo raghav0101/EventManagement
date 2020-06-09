@@ -11,11 +11,19 @@ insert into event_organisation values('o103','IEEE','NITK','ieee@nitk.edu.in','5
 insert into event_organisation values('o104','Music Club','NITK','musicc@gmail.com','9887235423');
 insert into event_organisation values('o105','Dance Crew','NITK','dancers@nitk.edu.in','9855463412');
 create table event_org(id varchar(128) not null,event_id_id varchar(128) not null,org_id_id varchar(128),primary key (id),foreign key (event_id_id) references event_event(event_id),foreign key (org_id_id) references event_organisation(org_id));
+<<<<<<< HEAD
 insert into event_org (event_id_id, org_id_id) values('1','e104','o101');
 insert into event_org (event_id_id, org_id_id) values('2','e101','o102');
 insert into event_org (event_id_id, org_id_id) values('3','e102','o103');
 insert into event_org (event_id_id, org_id_id) values('4','e105','o104');
 insert into event_org (event_id_id, org_id_id) values('5','e103','o105');
+=======
+insert into event_org (id,event_id_id, org_id_id) values('1','e104','o101');
+insert into event_org (id,event_id_id, org_id_id) values('2','e101','o102');
+insert into event_org (id,event_id_id, org_id_id) values('3','e102','o103');
+insert into event_org (id,event_id_id, org_id_id) values('4','e105','o104');
+insert into event_org (id,event_id_id, org_id_id) values('5','e103','o105');
+>>>>>>> b0c8bda717262b34d34b773cd170fdc6e4cb7d5e
 create table event_venue(venue_id varchar(128) not null,building_name varchar(50) default 'IRIS labs',room_no varchar(10) default '10',primary key (venue_id));
 insert into event_venue values('v101','SJA','1');
 insert into event_venue values('v102','ATB','0.1');
@@ -38,6 +46,7 @@ insert into event_users values('u102','Raghav','raghav@gmail.com','9876543210','
 insert into event_users values('u103','Nisarg','nisarg10@gmail.com','9875643210','M','1999-05-13','password');
 insert into event_users values('u104','Avdhesh','apsy@gmail.com','9870606542','M','1998-04-03','password');
 create table event_user(id varchar(128) not null,event_id_id varchar(128) not null,user_id_id varchar(128) not null,primary key (id),foreign key(event_id_id) references event_event (event_id),foreign key (user_id_id) references event_users(user_id));
+<<<<<<< HEAD
 insert into event_user(event_id_id, user_id_id) values('1','e101','u101');
 insert into event_user(event_id_id, user_id_id) values('2','e101','u102');
 insert into event_user(event_id_id, user_id_id) values('3','e102','u103');
@@ -54,6 +63,24 @@ insert into event_where(event_id_id, venue_id_id) values('2','e102','v108');
 insert into event_where(event_id_id, venue_id_id) values('3','e103','v101');
 insert into event_where(event_id_id, venue_id_id) values('4','e104','v114');
 insert into event_where(event_id_id, venue_id_id) values('5','e105','v113');
+=======
+insert into event_user(id,event_id_id, user_id_id) values('1','e101','u101');
+insert into event_user(id,event_id_id, user_id_id) values('2','e101','u102');
+insert into event_user(id,event_id_id, user_id_id) values('3','e102','u103');
+insert into event_user(id,event_id_id, user_id_id) values('4','e102','u101');
+insert into event_user(id,event_id_id, user_id_id) values('5','e105','u102');
+insert into event_user(id,event_id_id, user_id_id) values('6','e104','u102');
+insert into event_user(id,event_id_id, user_id_id) values('7','e104','u104');
+insert into event_user(id,event_id_id, user_id_id) values('8','e103','u104');
+insert into event_user(id,event_id_id, user_id_id) values('9','e102','u104');
+insert into event_user(id,event_id_id, user_id_id) values('10','e101','u104');
+create table event_where(id varchar(128),event_id_id varchar(128) not null,venue_id_id varchar(128) not null,primary key(id),foreign key(event_id_id) references event_event(event_id),foreign key(venue_id_id) references event_venue(venue_id));
+insert into event_where(id,event_id_id, venue_id_id) values('1','e101','v102');
+insert into event_where(id,event_id_id, venue_id_id) values('2','e102','v108');
+insert into event_where(id,event_id_id, venue_id_id) values('3','e103','v101');
+insert into event_where(id,event_id_id, venue_id_id) values('4','e104','v114');
+insert into event_where(id,event_id_id, venue_id_id) values('5','e105','v113');
+>>>>>>> b0c8bda717262b34d34b773cd170fdc6e4cb7d5e
 // DO NOT RUN THIS
 set foreign_key_checks=0;
 truncate table event_event;

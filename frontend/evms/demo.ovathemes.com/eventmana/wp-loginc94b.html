@@ -177,8 +177,21 @@
 						gender = "female";
 					}
 					let dob = document.getElementById("user_dob").value;
+					let user_type;
+					if(document.getElementById('reg1').checked){
+						user_type = "Organisation";
+					}
+					else{
+						user_type = "Individual";
+					}
+					if(document.getElementById('reg2').checked){
+						gender = "male";
+					}
+					else {
+						gender = "female";
+					}
 
-					console.log(email + " " + password + " "+ name + " " + phn_no + " " + gender + " " + dob);
+					console.log(email + " " + password + " "+ name + " " + phn_no + " " + gender + " " + dob + " " + user_type);
 
 					let data = {
 						email,
@@ -186,7 +199,8 @@
 						name,
 						phn_no,
 						gender,
-						dob
+						dob,
+						user_type,
 					};
 
 					let response = await register(data);
@@ -230,6 +244,12 @@
 							'<p>\n\n' +
 							'\t\t<label for="user_pass">Date Of birth<br />\n' +
 							'\t\t<input type="date" name="pwd" id="user_dob" aria-describedby="login_error" class="input" value="" size="20" /></label>\n' +
+							'\t</p>' +
+							'<p>\n' +
+							'\t\t<label for="register_as">Register As<br />\n' +
+							'\t\t  <input type="radio" name="register" value="organisation" id="reg1"> Organisation <br>\n' +
+							'  <input type="radio" name="register" value="Individual" id="reg2"> Individual <br>\n' +
+							'</label>\n' +
 							'\t</p>' +
 							'<p class="submit">\n' +
 							'\t\t<button type="button" name="wp-submit" id="wp-submit" class="button button-primary button-large"> Log In</button>\n' +
