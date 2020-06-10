@@ -190,6 +190,7 @@
 						} else {
 							gender = "female";
 						}
+						let user_type = type;
 						console.log(email + " " + password + " "+ name + " " + phn_no + " " + gender + " " + dob + " " + type);
 						let data = {
 							email,
@@ -198,7 +199,7 @@
 							phn_no,
 							gender,
 							dob,
-							type,
+							user_type,
 						};
 						let response = await register(data);
 
@@ -219,15 +220,17 @@
 						}
 					}
 					else {
-						let loc = document.getElementById("location").value;
-						console.log('hi4');
+						let orgLocation = document.getElementById("location").value;
+						let user_type = type;
+						let orgName = name;
+						console.log(password);
 						let data = {
 							email,
 							password,
-							name,
+							orgName,
 							phn_no,
-							loc,
-							type,
+							orgLocation,
+							user_type,
 						};
 
 						let response = await register(data);
