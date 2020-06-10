@@ -55,14 +55,4 @@ insert into event_where(id,event_id_id, venue_id_id) values('3','e103','v101');
 insert into event_where(id,event_id_id, venue_id_id) values('4','e104','v114');
 insert into event_where(id,event_id_id, venue_id_id) values('5','e105','v113');
 
-// DO NOT RUN THIS
-set foreign_key_checks=0;
-truncate table event_event;
-truncate table event_organisation;
-truncate table event_org;
-truncate table event_user;
-truncate table event_users;
-truncate table event_venue;
-truncate table event_payment;
-truncate table event_pay;
-set foreign_key_checks=1;
+
