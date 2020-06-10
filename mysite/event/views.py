@@ -170,14 +170,11 @@ class NewEvent(APIView):
         event_date=request.data['eventDate']
         time=request.data['time']
         desc=request.data['desc']
-        org_name=request.data['orgName']
-        email=request.data['email']
-        phn_no=request.data['phn_no']
-        org_location=request.data['orgLocation']
+        user_id = request.data['userId']
         bname=request.data['buildingName']
         room_no=request.data['roomNo']
         event_id=uuid.uuid4()
-        org = Organisation.objects.filter(org_name=org_name)
+        org = Organisation.objects.filter(org_id=userId)
         venue_id = Venue.objects.filter(building_name=bname, room_no=room_no)
         conflict = Event.objects.filter(event_date=event_date)
 
@@ -186,15 +183,8 @@ class NewEvent(APIView):
             return Response("",status=status.HTTP_409_CONFLICT)
 
         if len(org)==0:
-            org_id=uuid.uuid4()
-            newOrg = Organisation.objects.create(org_id=org_id,org_name=org_name,email=email,phn_no=phn_no,org_location=org_location)
-            newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc,event_date=event_date)
-            orgEvent = Org.objects.create(event_id=newEvent,org_id=newOrg)
-            venueEvent = Where.objects.create(event_id = newEvent,venue_id=venue_id[0])
-            serialized_newevent=EventSerializer(newEvent)
-            return Response(serialized_newevent.data,status = status.HTTP_200_OK)
-
-
+            return Response(status=status.HTTP_404_NOT_FOUND)
+        
         else:
             newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc,event_date=event_date)
             orgEvent = Org.objects.create(event_id=newEvent,org_id=org[0])
