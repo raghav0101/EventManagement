@@ -98,7 +98,8 @@ class Register(APIView):
 
         event = Event.objects.filter(pk=event_id)
         user = Users.objects.filter(pk=user_id)
-        register = User.objects.create(user_id=user[0],event_id=event[0])
+        id1 = uuid.uuid4()
+        register = User.objects.create(id=id1,user_id=user[0],event_id=event[0])
         serialized_register = UserSerializer(register)
         return Response(serialized_register.data, status=status.HTTP_200_OK)
 
@@ -174,7 +175,7 @@ class NewEvent(APIView):
         bname=request.data['buildingName']
         room_no=request.data['roomNo']
         event_id=uuid.uuid4()
-        org = Organisation.objects.filter(org_id=userId)
+        org = Organisation.objects.filter(org_id=user_id)
         venue_id = Venue.objects.filter(building_name=bname, room_no=room_no)
         conflict = Event.objects.filter(event_date=event_date)
 
@@ -183,12 +184,15 @@ class NewEvent(APIView):
             return Response("",status=status.HTTP_409_CONFLICT)
 
         if len(org)==0:
+            #print("hi")
             return Response(status=status.HTTP_404_NOT_FOUND)
         
         else:
             newEvent = Event.objects.create(event_id=event_id,event_name=event_name,event_type=event_type,time=time,desc=desc,event_date=event_date)
-            orgEvent = Org.objects.create(event_id=newEvent,org_id=org[0])
-            venueEvent = Where.objects.create(event_id = newEvent,venue_id=venue_id[0])
+            id1=uuid.uuid4()
+            id2=uuid.uuid4()
+            orgEvent = Org.objects.create(id=id1,event_id=newEvent,org_id=org[0])
+            venueEvent = Where.objects.create(id=id2,event_id = newEvent,venue_id=venue_id[0])
             serialized_newevent=EventSerializer(newEvent)
             return Response(serialized_newevent.data,status = status.HTTP_200_OK)
 
@@ -220,15 +224,17 @@ class logIn(APIView):
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
 class getType(APIView):
-    def get(self,request):
+    def post(self,request):
         user_id = request.data['userId']
-        org = Organisation.objects.filter(user_id = org_id)
+        org = Organisation.objects.filter(org_id = user_id)
         if len(org) ==0:
             individual = Users.objects.filter(user_id = user_id)
             if len(individual)==0:
                 return Response(status=status.HTTP_404_NOT_FOUND)
             else:
+                #print("Individual")
                 return HttpResponse('Individual')
         else:
+            #print("Organisation")
             return HttpResponse('Organisation')
 

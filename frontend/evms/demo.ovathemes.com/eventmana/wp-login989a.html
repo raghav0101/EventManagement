@@ -73,22 +73,22 @@
 			<label for="event_desc">Description<br />
 				<input type="text" name="log" id="event_desc" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>
 		</p>
-		<p>
-			<label for="user_login">Conducting Organisation Name<br />
-				<input type="text" name="log" id="orgName" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>
-		</p>
-		<p>
-			<label for="user_login">Organisation Email<br />
-				<input type="email" name="log" id="orgEmail" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>
-		</p>
-		<p>
-			<label for="user_login">Organisation Contact Number<br />
-				<input type="number" name="log" id="orgNumber" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>
-		</p>
-		<p>
-			<label for="user_login">Organisation Location<br />
-				<input type="text" name="log" id="orgLocation" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>
-		</p>
+<!--		<p>-->
+<!--			<label for="user_login">Conducting Organisation Name<br />-->
+<!--				<input type="text" name="log" id="orgName" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>-->
+<!--		</p>-->
+<!--		<p>-->
+<!--			<label for="user_login">Organisation Email<br />-->
+<!--				<input type="email" name="log" id="orgEmail" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>-->
+<!--		</p>-->
+<!--		<p>-->
+<!--			<label for="user_login">Organisation Contact Number<br />-->
+<!--				<input type="number" name="log" id="orgNumber" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>-->
+<!--		</p>-->
+<!--		<p>-->
+<!--			<label for="user_login">Organisation Location<br />-->
+<!--				<input type="text" name="log" id="orgLocation" aria-describedby="login_error" class="input" value="" size="20" autocapitalize="off" /></label>-->
+<!--		</p>-->
 		<p class="submit">
 			<button type="button" name="wp-submit" id="wp-submit" class="button button-primary button-large"> Create</button>
 		</p>
@@ -131,6 +131,9 @@
 			if(response.status ===409){
 				return undefined;
 			}
+			else if (response.status === 404){
+				return 'notpermitted';
+			}
 			let jsonResponse = await response.json();
 			console.log(jsonResponse);
 
@@ -153,11 +156,20 @@
 		let eventDate = document.getElementById("event_date").value;
 		let desc = document.getElementById("event_desc").value;
 		let time = document.getElementById("event_time").value;
-		let orgName = document.getElementById("orgName").value;
-		let email = document.getElementById("orgEmail").value;
-		let phn_no = document.getElementById("orgNumber").value;
-		let orgLocation = document.getElementById("orgLocation").value;
-		console.log(eventName + " " + eventType + " " + eventDate + " " + desc + " " + time +" "+orgName + " " + email + " " + orgLocation + " " + phn_no + " " + buildingName + " " + roomNo + " " + str1 );
+		//let orgName = document.getElementById("orgName").value;
+		//let email = document.getElementById("orgEmail").value;
+		//let phn_no = document.getElementById("orgNumber").value;
+		//let orgLocation = document.getElementById("orgLocation").value;
+		let userId;
+		if (localStorage.getItem("userId")===null){
+			userId = localStorage.getItem("orgId");
+		}
+		else{
+			userId = localStorage.getItem("userId");
+		}
+		//let userId = localStorage.getItem("userId")
+		console.log(eventName + " " + eventType + " " + eventDate + " " + desc + " " + time + " " + buildingName + " " + roomNo + " " + str1 + " " + userId);
+
 		let data = {
 			eventName,
 			eventType,
@@ -166,31 +178,16 @@
 			time,
 			buildingName,
 			roomNo,
-			orgName,
-			email,
-			phn_no,
-			orgLocation
+			userId,
 		};
 
 		let response = await createEvent(data);
 
 		console.log(response);
-		if (response) {
-			iziToast.show({
-				title:"Success",
-				message:"Event added successfully",
-				titleColor:'red',
-				backgroundColor: 'yellow',
-				onClosing: function(){
-					window.location.reload();
-				}
-			});
-			//window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
-		}
-		else if(response===undefined){
+		if(response==='notpermitted'){
 			iziToast.show({
 				title:"Message",
-				message:"Venue Already Booked",
+				message:"Not allowed. Ony organisations can create events",
 				titleColor:'red',
 				backgroundColor: 'yellow',
 				onClosing: function(){
@@ -199,17 +196,39 @@
 			});
 		}
 		else {
-			iziToast.show({
-				title:"Error",
-				message:"Please retry",
-				titleColor:'red',
-				backgroundColor: 'yellow',
-				onClosing: function(){
-					//window.location.reload();
-				}
-			});
+			if (response) {
+				iziToast.show({
+					title: "Success",
+					message: "Event added successfully",
+					titleColor: 'red',
+					backgroundColor: 'yellow',
+					onClosing: function () {
+						window.location.reload();
+					}
+				});
+				//window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
+			} else if (response === undefined) {
+				iziToast.show({
+					title: "Message",
+					message: "Venue Already Booked",
+					titleColor: 'red',
+					backgroundColor: 'yellow',
+					onClosing: function () {
+						//window.location.reload();
+					}
+				});
+			}  else {
+				iziToast.show({
+					title: "Error",
+					message: "Please retry",
+					titleColor: 'red',
+					backgroundColor: 'yellow',
+					onClosing: function () {
+						//window.location.reload();
+					}
+				});
+			}
 		}
-
 	};
 	document.getElementById("wp-submit").onclick = createEventComplete;
 </script>

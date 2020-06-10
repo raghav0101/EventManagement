@@ -21,5 +21,5 @@ urlpatterns = [
     path('newUser/',NewUser.as_view()),
     path('newEvent/',NewEvent.as_view()),
     path('logIn/',logIn.as_view()),
-    path('getType',getType.as_view()),
+    path('getType/',getType.as_view()),
 ]

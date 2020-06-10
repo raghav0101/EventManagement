@@ -113,7 +113,7 @@ jQuery(document).ready(function ($) {
     //generateCategoryMenu($);
     displayAllEvents($);
     displayUpComingEvents($);
-    if(localStorage.getItem("userId")===null || localStorage.getItem("userId")===undefined){
+    if((localStorage.getItem("userId")===null || localStorage.getItem("userId")===undefined) && (localStorage.getItem("orgId")===null || localStorage.getItem("orgId")===undefined)){
 
     }
     else{

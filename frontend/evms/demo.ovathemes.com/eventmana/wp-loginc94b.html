@@ -102,23 +102,49 @@
 						return null;
 					}
 				};
+				const get_type = async (data1) => {
+					let options = {
+						headers: {'Content-Type': 'application/json'},
+						method: 'POST',
+						body: JSON.stringify(data1)
+					};
+
+					try {
+						let response = await fetch(baseurl + '/event/getType/', options);                    // give api url
+						//let jsonResponse = await response.json();
+						console.log(response);
+
+						return response;
+					} catch (e) {
+						console.log(e);
+						return null;
+					}
+				};
 
 				const authenticateUser = async () => {
 					let email = document.getElementById("user_login").value;
 					let password = document.getElementById("user_pass").value;
-
 					console.log(email + " " + password);
 
 					let data = {
 						email,
 						password
 					};
-
 					let response = await login(data);
-
+					let userId = response.user_id;
+					let data1 = {
+						userId
+					}
+					//let response1 = await get_type(data1);
+					//console.log(response1);
 					console.log(response);
 					if (response) {
-						localStorage.setItem("userId",response.user_id);
+						if(response.user_id===undefined){
+							localStorage.setItem("orgId",response.org_id);
+						}
+						else {
+							localStorage.setItem("userId", response.user_id);
+						}
 						window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
 					} else {
 						iziToast.show({

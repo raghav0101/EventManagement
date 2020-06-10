@@ -104,38 +104,50 @@ const registerEvent = async (data) => {
 
 const registerEventComplete = async ($,eventId) => {
 
-    let userId = localStorage.getItem("userId");
-    let data = {
-        eventId,
-        userId
-    };
-
-    let response = await registerEvent(data);
-
-    console.log(response);
-    if (response) {
-        iziToast.show({
-            title:"Success",
-            message:"Registered successfully",
-            titleColor:'red',
-            backgroundColor: 'yellow',
-            onClosing: function(){
-                window.location.reload();
-            }
-        });
-        //window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
-    } else {
+    if (localStorage.getItem("userId")===null){
         iziToast.show({
             title:"Message",
-            message:"Already Registered",
+            message:"Only individual users can register",
             titleColor:'red',
             backgroundColor: 'yellow',
             onClosing: function(){
-               // window.location.reload();
+                // window.location.reload();
             }
         });
     }
+    else {
+        let userId = localStorage.getItem("userId");
+        let data = {
+            eventId,
+            userId
+        };
 
+        let response = await registerEvent(data);
+
+        console.log(response);
+        if (response) {
+            iziToast.show({
+                title: "Success",
+                message: "Registered successfully",
+                titleColor: 'red',
+                backgroundColor: 'yellow',
+                onClosing: function () {
+                    window.location.reload();
+                }
+            });
+            //window.location.replace('http://localhost:63342/EventManagement/frontend/evms/demo.ovathemes.com/eventmana/index.html');
+        } else {
+            iziToast.show({
+                title: "Message",
+                message: "Already Registered",
+                titleColor: 'red',
+                backgroundColor: 'yellow',
+                onClosing: function () {
+                    // window.location.reload();
+                }
+            });
+        }
+    }
 };
 
 const displayPicture = async ($,eventId) => {
@@ -210,8 +222,8 @@ jQuery(document).ready(function ($) {
     }) ;
    // displayPicture($,eventId);
     displayUpComingEvents($);
-    if(localStorage.getItem("userId")===null || localStorage.getItem("userId")===undefined){
-        notDisplayRegister($);
+    if((localStorage.getItem("userId")===null || localStorage.getItem("userId")===undefined) && (localStorage.getItem("orgId")===null || localStorage.getItem("orgId")===undefined)){
+
     }
     else{
         /*   $('#rm1').empty();
