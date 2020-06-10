@@ -29,6 +29,6 @@ Steps for Ubuntu 18.04
       mysql -u root -p
   ```
   - Enter password if prompted.
-  - Copy paste all the command from dbc.sql here.
+  - Copy paste all the commands from dbc.sql here.
   - Run frontend/evms/demo.ovathemes.com/eventmana/index.html in a browser and enjoy as the application works :).
   
